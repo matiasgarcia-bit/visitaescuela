@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enlaces de Interés</title>
+  <style>
+    body {
+      background-color: #f0f4f8;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #333;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .contenedor {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* 4 por fila */
+      grid-gap: 25px; /* Espaciado uniforme */
+      width: 80%;
+      max-width: 1000px;
+    }
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 0;
+      text-decoration: none;
+      color: white;
+      background-color: #007BFF;
+      border-radius: 8px;
+      font-size: 18px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      text-align: center;
+    }
+
+    a:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+    }
+
+    a:active {
+      transform: scale(0.98);
+    }
+
+    /* Estilo especial para el botón final para que resalte y ocupe toda la fila */
+    .btn-final {
+      grid-column: 1 / -1;
+      background-color: #28a745; /* Color verde para diferenciarlo */
+      font-weight: bold;
+    }
+
+    .btn-final:hover {
+      background-color: #218838;
+    }
+
+    /* Adaptación para pantallas pequeñas */
+    @media (max-width: 800px) {
+      .contenedor {
+        grid-template-columns: repeat(2, 1fr); /* 2 por fila en tablets/móviles */
+      }
+    }
+
+    @media (max-width: 500px) {
+      .contenedor {
+        grid-template-columns: 1fr; /* 1 por fila en pantallas muy pequeñas */
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>TUMO - Visita de escuelas</h1>
+  <div class="contenedor">
+    <a href="https://www.incredibox.com/" target="_blank">MÚSICA</a>
+    <a href="https://tumo-product.github.io/PlatformGames/es_AR.html" target="_blank">VIDEOJUEGOS</a>
+    <a href="https://hackathon-ia-tumo.vercel.app" target="_blank">GEN AI</a>
+    <a href="https://compute-it.toxicode.fr/" target="_blank">PROGRAMACIÓN</a>
+    <a href="https://drive.google.com/drive/folders/12Hmezl-JHjctS1w2lPauqJlkRAIoOAqw?usp=drive_link" target="_blank">FOTOGRAFÍA</a>
+    <a href="https://stephaneginier.com/sculptgl/" target="_blank">MODELADO 3D</a>
+    <a href="https://docs.google.com/presentation/d/1wgKOgCMCuJOjCED2w0mSCxa3L6c6AAco/edit?usp=sharing&ouid=100086266346645623614&rtpof=true&sd=true" target="_blank">DIBUJO</a>
+    <a href="https://cloudstopmotion.com/" target="_blank">CINE</a>
+    
+    <a href="https://kahoot.it/" target="_blank" class="btn-final">JUEGO FINAL</a>
+  </div>
+</body>
+</html>
