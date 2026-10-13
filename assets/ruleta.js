@@ -109,7 +109,7 @@ function mostrarResultado(id) {
   void resultado.offsetWidth; // reinicia la animación
   resultado.classList.add("aparece");
   resultado.innerHTML = `
-    <div class="resultado-icono">${icono(id)}</div>
+    <div class="resultado-icono">${iconoAnimado(id)}</div>
     <div class="resultado-nombre">${a.nombre}</div>
     <div class="acciones">
       <a class="boton primario" href="${linkDe(id, null)}" target="_blank" rel="noopener">Ir a la actividad ↗</a>

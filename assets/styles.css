@@ -471,7 +471,7 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
 
 .resultado { text-align: center; padding: 16px 0 4px; }
 .resultado-icono { font-size: 64px; line-height: 1; }
-.resultado-icono img { width: 96px; height: 96px; display: block; margin: 0 auto; }
+.resultado-icono .card-icono { width: 120px; height: 120px; margin: 0 auto; } /* el ícono animado de la actividad */
 .resultado-nombre { font-size: 32px; font-weight: 800; margin: 10px 0 4px; }
 .resultado-vacio { color: var(--muted); padding: 24px 0; text-align: center; }
 
