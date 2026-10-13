@@ -11,6 +11,7 @@ const ACTIVIDADES = {
   motion:      { nombre: "Motion graphics",icono: "✨", color: "#9b51e0", link: "https://www.motionity.app/" },
   cine:        { nombre: "Cine",           icono: "🎬", color: "#d63031", link: "https://cloudstopmotion.com/" },
   fotografia:  { nombre: "Fotografía",     icono: "📷", color: "#16a085", link: "https://docs.google.com/presentation/d/1GkRyXfYC1iKMxci1pfwX8kZ4nlCUbHGs/edit?usp=sharing&ouid=111947021961172210965&rtpof=true&sd=true" },
+  dibujo:      { nombre: "Dibujo",         icono: "✏️", color: "#c0392b", link: "https://docs.google.com/presentation/d/1sAyDvsnyUDrzstdH9mnmAVdAD4KuSxQ-/edit?usp=sharing&ouid=101437381458811997703&rtpof=true&sd=true" },
 };
 
 // Sedes: qué actividades tiene cada una y, si hace falta, links propios que pisan los del catálogo.
@@ -21,18 +22,12 @@ const SEDES = {
   },
   chacarita: {
     nombre: "Chacarita",
-    actividades: ["videojuegos", "ia", "animacion", "diseno", "modelado", "programacion", "robotica", "musica"],
+    actividades: ["musica", "videojuegos", "ia", "programacion", "fotografia", "modelado", "dibujo", "cine"],
     links: { programacion: "https://cubicpainter.com/" },
   },
   nunez: {
     nombre: "Núñez",
     actividades: ["motion", "ia", "modelado", "cine", "fotografia", "videojuegos", "programacion", "diseno"],
-  },
-  expo: {
-    nombre: "Expo",
-    oculta: true, // no aparece en el menú, en "Todas las sedes" ni en la ruleta
-    actividades: ["musica", "videojuegos", "animacion", "programacion", "diseno", "modelado", "cine"],
-    links: { animacion: "https://flipanim.com/", diseno: "https://editor.method.ac/" },
   },
 };
 
@@ -44,7 +39,7 @@ function linkDe(actividadId, sedeId) {
 }
 
 function sedesVisibles() {
-  return Object.keys(SEDES).filter((id) => !SEDES[id].oculta);
+  return Object.keys(SEDES);
 }
 
 // Unión de las actividades de todas las sedes visibles, en orden de catálogo.
