@@ -130,10 +130,10 @@ function armarInicio() {
   tarjetas.push(`
     <a class="sede destacada" href="sedes/">
       <div class="sede-titulo"><h2>Todas las sedes</h2></div>
-      <div class="sede-iconos dos-filas" style="--columnas:${Math.ceil(todasLasActividades().length / 2)}">${todasLasActividades().map(icono).join("")}</div>
+      <div class="sede-iconos">${todasLasActividades().map(icono).join("")}</div>
     </a>`);
   tarjetas.push(`
-    <a class="sede destacada" href="ruleta/">
+    <a class="sede destacada ruleta-boton" href="ruleta/">
       <div class="sede-titulo"><h2>Ruleta 🎡</h2></div>
     </a>`);
   document.getElementById("hub").innerHTML = tarjetas.join("");

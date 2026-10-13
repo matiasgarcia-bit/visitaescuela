@@ -386,10 +386,6 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
 .sede-iconos { display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; }
 .sede-iconos img { flex: 0 1 36px; min-width: 0; width: 36px; height: auto; aspect-ratio: 1; display: block; }
 
-/* "Todas las sedes" reparte sus íconos en dos filas iguales. */
-.sede-iconos.dos-filas { display: grid; grid-template-columns: repeat(var(--columnas), minmax(0, 36px)); }
-.sede-iconos.dos-filas img { width: 100%; }
-
 .sede-color { color: var(--blanco); }
 .sede-color[data-sede="barracas"] { background: var(--barracas); }
 .sede-color[data-sede="barracas"]:hover { background: var(--barracas-oscuro); }
@@ -400,6 +396,8 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
 
 /* Todas las sedes y ruleta: mismo color (negro institucional). */
 .sede.destacada { grid-column: span 3; background: var(--ink); color: var(--bg); }
+.ruleta-boton { justify-content: center; } /* título centrado en vertical, sigue alineado a la izquierda */
+.ruleta-boton .sede-titulo h2 { font-size: clamp(40px, 6vw, 64px); line-height: 1; }
 
 /* ---------- Ruleta ---------- */
 .ruleta-layout {
