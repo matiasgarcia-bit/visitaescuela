@@ -3,8 +3,8 @@
 const ACTIVIDADES = {
   videojuegos: { nombre: "Videojuegos",    area: "programacion", icono: "🎮", color: "#93b11e", link: "https://tumo-product.github.io/PlatformGames/es_AR.html", logo: "icons/videojuegos.webp" },
   ia:          { nombre: "IA",             area: "programacion", icono: "🤖", color: "#8f6cf0", link: "https://hackathon-ia-tumo.vercel.app", logo: "icons/ia.webp" },
-  animacion:   { nombre: "Animación 2D",   area: "diseno", icono: "🎞️", color: "#ffa600", link: "https://docs.google.com/document/d/1U_kScfsVtxFEGS2MgzhLoNEV428iTcTlWOUAvETYCbE/edit?usp=sharing", logo: "icons/animacion.webp" },
-  diseno:      { nombre: "Diseño gráfico", area: "diseno", icono: "🎨", color: "#f01243", link: "https://docs.google.com/document/d/1U_kScfsVtxFEGS2MgzhLoNEV428iTcTlWOUAvETYCbE/edit?usp=sharing", logo: "icons/diseno.webp" },
+  animacion:   { nombre: "Animación 2D",   area: "diseno", icono: "🎞️", color: "#ffa600", link: "https://garticphone.com/es", logo: "icons/animacion.webp" },
+  diseno:      { nombre: "Diseño gráfico", area: "diseno", icono: "🎨", color: "#f01243", link: "https://garticphone.com/es", logo: "icons/diseno.webp" },
   modelado:    { nombre: "Modelado 3D",    area: "diseno", icono: "🧊", color: "#787323", link: "https://stephaneginier.com/sculptgl/", logo: "icons/modelado.webp" },
   programacion:{ nombre: "Programación",   area: "programacion", icono: "💻", color: "#a59e67", link: "https://compute-it.toxicode.fr/", logo: "icons/programacion.webp" },
   robotica:    { nombre: "Robótica",       area: "programacion", icono: "🦾", color: "#c8613b", link: "https://lab.open-roberta.org/", logo: "icons/robotica.webp" },
