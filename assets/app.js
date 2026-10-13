@@ -10,7 +10,7 @@ function armarMenu() {
     { id: "inicio", texto: "Inicio", href: "" },
     ...sedesVisibles().map((id) => ({ id, texto: SEDES[id].nombre, href: id + "/" })),
     { id: "sedes", texto: "Todas las sedes", href: "sedes/" },
-    { id: "ruleta", texto: "🎡 Ruleta", href: "ruleta/" },
+    { id: "ruleta", texto: "Ruleta 🎡", href: "ruleta/" },
   ];
   const activa = document.body.dataset.pagina;
   // Logo de TUMO Buenos Aires; si el archivo falta, queda el texto "TUMO.".
@@ -130,11 +130,11 @@ function armarInicio() {
   tarjetas.push(`
     <a class="sede destacada" href="sedes/">
       <div class="sede-titulo"><h2>Todas las sedes</h2></div>
-      <div class="sede-iconos">${todasLasActividades().map(icono).join("")}</div>
+      <div class="sede-iconos dos-filas" style="--columnas:${Math.ceil(todasLasActividades().length / 2)}">${todasLasActividades().map(icono).join("")}</div>
     </a>`);
   tarjetas.push(`
     <a class="sede destacada" href="ruleta/">
-      <div class="sede-titulo"><h2>🎡 Ruleta</h2></div>
+      <div class="sede-titulo"><h2>Ruleta 🎡</h2></div>
     </a>`);
   document.getElementById("hub").innerHTML = tarjetas.join("");
 }

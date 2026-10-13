@@ -62,11 +62,27 @@ body[data-sede] { --bg: var(--sede); --surface: var(--blanco); color: var(--blan
 body[data-sede] .topbar { border-bottom-color: rgba(255, 255, 255, .2); }
 body[data-sede] .logo-img { filter: none; }
 
-/* Recurso gráfico "TUMO path": una píldora y dos puntos, con los colores de la propia sede. */
+/* Botones de actividad semitransparentes sobre el color de la sede. */
+body[data-sede] .card {
+  background: rgba(242, 242, 242, .55);
+  border-color: rgba(255, 255, 255, .45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: none;
+  transition: transform .2s ease, background .2s ease;
+}
+body[data-sede] .card:hover { background: rgba(242, 242, 242, .8); }
+:root[data-theme="dark"] body[data-sede] .card { background: rgba(47, 52, 59, .55); border-color: rgba(255, 255, 255, .12); }
+:root[data-theme="dark"] body[data-sede] .card:hover { background: rgba(47, 52, 59, .8); }
+
+/* Recurso gráfico "TUMO path" bajo cada título: una píldora y dos puntos.
+   En páginas generales va en negro institucional; en cada sede, con los colores de la sede. */
 .path { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
-.path span { width: 72px; height: 14px; border-radius: 999px; background: var(--blanco); }
-.path i { width: 14px; height: 14px; border-radius: 50%; background: var(--sede-oscuro); }
-:root[data-theme="dark"] .path i { background: var(--sede); }
+.path span { width: 72px; height: 14px; border-radius: 999px; background: var(--ink); }
+.path i { width: 14px; height: 14px; border-radius: 50%; background: var(--muted); }
+body[data-sede] .path span { background: var(--blanco); }
+body[data-sede] .path i { background: var(--sede-oscuro); }
+:root[data-theme="dark"] body[data-sede] .path i { background: var(--sede); }
 
 /* ---------- Navegación ---------- */
 .topbar {
@@ -300,7 +316,7 @@ h1 {
   justify-content: center;
   gap: 12px;
   padding: 22px;
-  border-radius: var(--radius);
+  border-radius: 999px;
   background: var(--ink);
   color: var(--bg);
   font-size: 22px;
@@ -341,7 +357,8 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
 .chip.activo { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
 /* ---------- Inicio ---------- */
-/* Arriba las tres sedes; abajo, en dos columnas, todas las sedes y la ruleta. */
+/* Arriba las tres sedes; abajo, en dos columnas, todas las sedes y la ruleta.
+   Todas las tarjetas comparten estructura: título arriba a la izquierda e íconos en una sola fila. */
 .hub {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -352,9 +369,10 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
   grid-column: span 2;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  justify-content: space-between;
+  gap: 20px;
   padding: 24px;
-  min-height: 170px;
+  min-height: 150px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   text-decoration: none;
@@ -365,8 +383,12 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
 
 .sede-titulo h2 { margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -.01em; }
 
-.sede-iconos { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 24px; margin-top: auto; }
-.sede-iconos img { width: 32px; height: 32px; display: block; }
+.sede-iconos { display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; }
+.sede-iconos img { flex: 0 1 36px; min-width: 0; width: 36px; height: auto; aspect-ratio: 1; display: block; }
+
+/* "Todas las sedes" reparte sus íconos en dos filas iguales. */
+.sede-iconos.dos-filas { display: grid; grid-template-columns: repeat(var(--columnas), minmax(0, 36px)); }
+.sede-iconos.dos-filas img { width: 100%; }
 
 .sede-color { color: var(--blanco); }
 .sede-color[data-sede="barracas"] { background: var(--barracas); }
@@ -376,18 +398,8 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
 .sede-color[data-sede="nunez"] { background: var(--nunez); }
 .sede-color[data-sede="nunez"]:hover { background: var(--nunez-oscuro); }
 
-/* Todas las sedes y ruleta: mismo color, grandes y centradas. */
-.sede.destacada {
-  grid-column: span 3;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 40px 24px;
-  background: var(--ink);
-  color: var(--bg);
-}
-.sede.destacada .sede-titulo h2 { font-size: clamp(32px, 5vw, 48px); }
-.sede.destacada .sede-iconos { justify-content: center; margin-top: 0; }
+/* Todas las sedes y ruleta: mismo color (negro institucional). */
+.sede.destacada { grid-column: span 3; background: var(--ink); color: var(--bg); }
 
 /* ---------- Ruleta ---------- */
 .ruleta-layout {
@@ -480,7 +492,7 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
   justify-content: center;
   gap: 8px;
   padding: 14px 18px;
-  border-radius: 14px;
+  border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--surface);
   color: var(--ink);
