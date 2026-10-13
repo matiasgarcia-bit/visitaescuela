@@ -13,18 +13,69 @@ function armarMenu() {
     { id: "ruleta", texto: "🎡 Ruleta", href: "ruleta/" },
   ];
   const activa = document.body.dataset.pagina;
+  // Logo de TUMO Buenos Aires; si el archivo falta, queda el texto "TUMO.".
+  const logo = `<img class="logo-img" src="${BASE}assets/logo-tumo.webp" alt="TUMO Buenos Aires"
+    onerror="this.replaceWith(Object.assign(document.createElement('span'), { innerHTML: 'TUMO<span>.</span>' }))">`;
   const header = document.createElement("header");
   header.className = "topbar";
-  header.innerHTML = `
+  // Solo el inicio tiene menú: dentro de una sede no se puede saltar a las otras.
+  header.innerHTML = activa === "inicio"
+    ? `
     <div class="topbar-inner">
-      <a class="logo" href="${BASE || "./"}">TUMO<span>.</span></a>
+      <a class="logo" href="./">${logo}</a>
       <nav class="nav">
         ${items.map((i) => `<a href="${BASE + i.href || "./"}" class="${i.id === activa ? "activo" : ""}">${i.texto}</a>`).join("")}
       </nav>
+      <button class="tema" id="tema"></button>
+    </div>`
+    : `
+    <div class="topbar-inner">
+      <span class="logo">${logo}</span>
+      <button class="tema" id="tema"></button>
     </div>`;
   document.body.prepend(header);
+  armarBotonTema(header.querySelector("#tema"));
   const enlaceActivo = header.querySelector(".nav a.activo");
   if (enlaceActivo) enlaceActivo.scrollIntoView({ block: "nearest", inline: "center" });
+}
+
+// Claro por defecto; la elección se recuerda en este navegador.
+function armarBotonTema(boton) {
+  const raiz = document.documentElement;
+  const pintar = () => {
+    const oscuro = raiz.dataset.theme === "dark";
+    boton.textContent = oscuro ? "☀️" : "🌙";
+    boton.title = oscuro ? "Tema claro" : "Tema oscuro";
+  };
+  boton.addEventListener("click", () => {
+    const oscuro = raiz.dataset.theme !== "dark";
+    if (oscuro) raiz.dataset.theme = "dark";
+    else delete raiz.dataset.theme;
+    try { localStorage.setItem("tema", oscuro ? "oscuro" : "claro"); } catch (e) {}
+    pintar();
+  });
+  pintar();
+}
+
+// Ícono de tumo.ar si la actividad lo tiene; si no, su emoji.
+function icono(actividadId) {
+  const a = ACTIVIDADES[actividadId];
+  return a.logo ? `<img src="${BASE}assets/${a.logo}" alt="">` : a.icono;
+}
+
+// En las tarjetas el ícono se anima recorriendo la grilla de cuadros:
+// la imagen avanza de a una columna y el contenedor baja de a una fila al terminar cada fila.
+function iconoAnimado(actividadId) {
+  const anim = ANIMACIONES[actividadId];
+  if (!anim) return `<div class="card-icono ${ACTIVIDADES[actividadId].logo ? "con-logo" : ""}">${icono(actividadId)}</div>`;
+  const [columnas, filas, ms] = anim;
+  return `
+      <div class="card-icono animado">
+        <div class="sprite-filas" style="animation-duration:${ms}ms;animation-timing-function:steps(${filas})">
+          <img class="sprite" src="${BASE}assets/animados/${actividadId}.webp" alt=""
+            style="width:${columnas * 100}%;animation-duration:${ms / filas}ms;animation-timing-function:steps(${columnas})">
+        </div>
+      </div>`;
 }
 
 function tarjeta(actividadId, sedeId, conBadges) {
@@ -32,11 +83,11 @@ function tarjeta(actividadId, sedeId, conBadges) {
   const sedes = sedesVisibles().filter((id) => SEDES[id].actividades.includes(actividadId));
   const pie = conBadges
     ? `<div class="badges">${sedes.map((id) => `<span class="badge">${SEDES[id].nombre}</span>`).join("")}</div>`
-    : `<span>Abrir actividad</span>`;
+    : `<span></span>`;
   return `
     <a class="card" href="${linkDe(actividadId, sedeId)}" target="_blank" rel="noopener"
        style="--c:${a.color}" data-actividad="${actividadId}" data-sedes="${sedes.join(" ")}">
-      <div class="card-icono">${a.icono}</div>
+      ${iconoAnimado(actividadId)}
       <div class="card-nombre">${a.nombre}</div>
       <div class="card-pie">${pie}<span class="card-flecha">↗</span></div>
     </a>`;
@@ -73,21 +124,18 @@ function armarInicio() {
     const s = SEDES[id];
     return `
       <a class="sede" href="${id}/">
-        <div class="sede-titulo"><h2>${s.nombre}</h2><span>${s.actividades.length} actividades</span></div>
-        <div class="sede-iconos">${s.actividades.map((a) => ACTIVIDADES[a].icono).join("")}</div>
-        <p>${s.actividades.map((a) => ACTIVIDADES[a].nombre).join(" · ")}</p>
+        <div class="sede-titulo"><h2>${s.nombre}</h2></div>
+        <div class="sede-iconos">${s.actividades.map(icono).join("")}</div>
       </a>`;
   });
   tarjetasSedes.push(`
     <a class="sede" href="sedes/">
-      <div class="sede-titulo"><h2>Todas las sedes</h2><span>${todasLasActividades().length} actividades</span></div>
-      <div class="sede-iconos">${todasLasActividades().map((a) => ACTIVIDADES[a].icono).join("")}</div>
-      <p>Todas las actividades juntas, con filtro por sede.</p>
+      <div class="sede-titulo"><h2>Todas las sedes</h2></div>
+      <div class="sede-iconos">${todasLasActividades().map(icono).join("")}</div>
     </a>`);
   tarjetasSedes.push(`
     <a class="sede destacada" href="ruleta/">
-      <div class="sede-titulo"><h2>🎡 Ruleta</h2><span>¿No sabés por dónde empezar?</span></div>
-      <p>Girá la ruleta y dejá que el azar elija tu próxima actividad.</p>
+      <div class="sede-titulo"><h2>🎡 Ruleta</h2></div>
     </a>`);
   document.getElementById("hub").innerHTML = tarjetasSedes.join("");
 }

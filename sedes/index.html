@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TUMO · Todas las sedes</title>
+  <script>try { if (localStorage.getItem("tema") === "oscuro") document.documentElement.dataset.theme = "dark"; } catch (e) {}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,9 +13,7 @@
 <body data-base="../" data-pagina="sedes">
   <main>
     <div class="encabezado">
-      <span class="eyebrow">Todas las sedes</span>
-      <h1>Todas las actividades</h1>
-      <p class="bajada">Todo lo que hacemos en TUMO. Filtrá por sede para ver qué hay en cada una.</p>
+      <h1>Todas las sedes</h1>
     </div>
     <div class="filtros" id="filtros"></div>
     <div class="grid" id="grid"></div>

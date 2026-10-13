@@ -1,17 +1,32 @@
 // Catálogo de actividades: para cambiar un link, editarlo acá y se actualiza en todas las sedes.
+// "logo" es el ícono del área sacado de tumo.ar (assets/icons); si no hay, se usa el emoji de "icono".
 const ACTIVIDADES = {
-  videojuegos: { nombre: "Videojuegos",    icono: "🎮", color: "#7c4dff", link: "https://tumo-product.github.io/PlatformGames/es_AR.html" },
-  ia:          { nombre: "IA",             icono: "🤖", color: "#00a3a3", link: "https://hackathon-ia-tumo.vercel.app" },
-  animacion:   { nombre: "Animación 2D",   icono: "🎞️", color: "#ff7a1a", link: "https://docs.google.com/document/d/1U_kScfsVtxFEGS2MgzhLoNEV428iTcTlWOUAvETYCbE/edit?usp=sharing" },
-  diseno:      { nombre: "Diseño gráfico", icono: "🎨", color: "#e83e8c", link: "https://docs.google.com/document/d/1U_kScfsVtxFEGS2MgzhLoNEV428iTcTlWOUAvETYCbE/edit?usp=sharing" },
-  modelado:    { nombre: "Modelado 3D",    icono: "🧊", color: "#2f80ed", link: "https://stephaneginier.com/sculptgl/" },
-  programacion:{ nombre: "Programación",   icono: "💻", color: "#27ae60", link: "https://compute-it.toxicode.fr/" },
-  robotica:    { nombre: "Robótica",       icono: "🦾", color: "#5d6d7e", link: "https://lab.open-roberta.org/" },
-  musica:      { nombre: "Música",         icono: "🎵", color: "#f2b705", link: "https://www.incredibox.com/" },
-  motion:      { nombre: "Motion graphics",icono: "✨", color: "#9b51e0", link: "https://www.motionity.app/" },
-  cine:        { nombre: "Cine",           icono: "🎬", color: "#d63031", link: "https://cloudstopmotion.com/" },
-  fotografia:  { nombre: "Fotografía",     icono: "📷", color: "#16a085", link: "https://docs.google.com/presentation/d/1GkRyXfYC1iKMxci1pfwX8kZ4nlCUbHGs/edit?usp=sharing&ouid=111947021961172210965&rtpof=true&sd=true" },
-  dibujo:      { nombre: "Dibujo",         icono: "✏️", color: "#c0392b", link: "https://docs.google.com/presentation/d/1sAyDvsnyUDrzstdH9mnmAVdAD4KuSxQ-/edit?usp=sharing&ouid=101437381458811997703&rtpof=true&sd=true" },
+  videojuegos: { nombre: "Videojuegos",    area: "programacion", icono: "🎮", color: "#93b11e", link: "https://tumo-product.github.io/PlatformGames/es_AR.html", logo: "icons/videojuegos.webp" },
+  ia:          { nombre: "IA",             area: "programacion", icono: "🤖", color: "#8f6cf0", link: "https://hackathon-ia-tumo.vercel.app", logo: "icons/ia.webp" },
+  animacion:   { nombre: "Animación 2D",   area: "diseno", icono: "🎞️", color: "#ffa600", link: "https://docs.google.com/document/d/1U_kScfsVtxFEGS2MgzhLoNEV428iTcTlWOUAvETYCbE/edit?usp=sharing", logo: "icons/animacion.webp" },
+  diseno:      { nombre: "Diseño gráfico", area: "diseno", icono: "🎨", color: "#f01243", link: "https://docs.google.com/document/d/1U_kScfsVtxFEGS2MgzhLoNEV428iTcTlWOUAvETYCbE/edit?usp=sharing", logo: "icons/diseno.webp" },
+  modelado:    { nombre: "Modelado 3D",    area: "diseno", icono: "🧊", color: "#787323", link: "https://stephaneginier.com/sculptgl/", logo: "icons/modelado.webp" },
+  programacion:{ nombre: "Programación",   area: "programacion", icono: "💻", color: "#a59e67", link: "https://compute-it.toxicode.fr/", logo: "icons/programacion.webp" },
+  robotica:    { nombre: "Robótica",       area: "programacion", icono: "🦾", color: "#c8613b", link: "https://lab.open-roberta.org/", logo: "icons/robotica.webp" },
+  musica:      { nombre: "Música",         area: "diseno", icono: "🎵", color: "#782f6c", link: "https://www.incredibox.com/", logo: "icons/musica.webp" },
+  motion:      { nombre: "Motion graphics",area: "diseno", icono: "✨", color: "#ce2b24", link: "https://www.motionity.app/", logo: "icons/motion.webp" },
+  cine:        { nombre: "Cine",           area: "diseno", icono: "🎬", color: "#fa5c1b", link: "https://cloudstopmotion.com/", logo: "icons/cine.webp" },
+  fotografia:  { nombre: "Fotografía",     area: "diseno", icono: "📷", color: "#0895b7", link: "https://docs.google.com/presentation/d/1GkRyXfYC1iKMxci1pfwX8kZ4nlCUbHGs/edit?usp=sharing&ouid=111947021961172210965&rtpof=true&sd=true", logo: "icons/fotografia.webp" },
+  dibujo:      { nombre: "Dibujo",         area: "diseno", icono: "✏️", color: "#c0392b", link: "https://docs.google.com/presentation/d/1sAyDvsnyUDrzstdH9mnmAVdAD4KuSxQ-/edit?usp=sharing&ouid=101437381458811997703&rtpof=true&sd=true" },
+};
+
+// Animaciones de los GIF de tumo.ar como grilla de cuadros (assets/animados): [columnas, filas, duración en ms].
+// Se usan solo en las tarjetas para elegir actividad.
+const ANIMACIONES = {
+  videojuegos: [25, 5, 10000], animacion: [25, 5, 10000], cine: [25, 5, 10000], diseno: [25, 5, 10000],
+  robotica: [25, 5, 10000], modelado: [25, 5, 10000], programacion: [25, 5, 10000], musica: [25, 5, 10000],
+  ia: [13, 7, 3640], motion: [25, 5, 10000], fotografia: [25, 5, 10000],
+};
+
+// Áreas para filtrar la ruleta. Cada actividad indica su área con el campo "area".
+const AREAS = {
+  diseno: { nombre: "🎨 Diseño" },
+  programacion: { nombre: "💻 Programación" },
 };
 
 // Sedes: qué actividades tiene cada una y, si hace falta, links propios que pisan los del catálogo.
@@ -28,6 +43,7 @@ const SEDES = {
   nunez: {
     nombre: "Núñez",
     actividades: ["motion", "ia", "modelado", "cine", "fotografia", "videojuegos", "programacion", "diseno"],
+    links: { diseno: "https://skribbl.io/" },
   },
 };
 

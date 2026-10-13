@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TUMO · Ruleta</title>
+  <script>try { if (localStorage.getItem("tema") === "oscuro") document.documentElement.dataset.theme = "dark"; } catch (e) {}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,9 +13,7 @@
 <body data-base="../" data-pagina="ruleta">
   <main>
     <div class="encabezado">
-      <span class="eyebrow">Ruleta</span>
-      <h1>¿Qué te toca hoy?</h1>
-      <p class="bajada">Girá la ruleta y descubrí tu actividad. Si no te convence, volvé a tirar.</p>
+      <h1>🎡 Ruleta</h1>
     </div>
     <div class="ruleta-layout">
       <div class="ruleta">
@@ -31,7 +30,6 @@
           </div>
         </div>
         <div class="panel">
-          <h2>Actividades de</h2>
           <div class="filtros" id="filtros"></div>
         </div>
       </div>
