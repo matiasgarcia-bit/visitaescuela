@@ -1,4 +1,4 @@
-// Ruleta: gira, elige una actividad al azar del área elegida (diseño o programación) y permite volver a tirar.
+// Ruleta: gira, elige una actividad al azar (de todas, o solo de diseño o de programación) y permite volver a tirar.
 
 const canvas = document.getElementById("ruleta");
 const ctx = canvas.getContext("2d");
@@ -7,7 +7,7 @@ const botonReroll = document.getElementById("reroll");
 const resultado = document.getElementById("resultado");
 const filtros = document.getElementById("filtros");
 
-let areaElegida = Object.keys(AREAS)[0];
+let areaElegida = ""; // "" = todas las actividades
 let opciones = [];
 let rotacion = 0;
 let girando = false;
@@ -24,7 +24,7 @@ Object.keys(ACTIVIDADES).forEach((id) => {
 });
 
 function actividadesDelGrupo() {
-  return todasLasActividades().filter((id) => ACTIVIDADES[id].area === areaElegida);
+  return todasLasActividades().filter((id) => !areaElegida || ACTIVIDADES[id].area === areaElegida);
 }
 
 function dibujar() {
@@ -82,8 +82,8 @@ function dibujar() {
 }
 
 function armarFiltros() {
-  filtros.innerHTML = Object.keys(AREAS)
-    .map((id) => `<button class="chip ${id === areaElegida ? "activo" : ""}" data-area="${id}">${AREAS[id].nombre}</button>`)
+  filtros.innerHTML = ["", ...Object.keys(AREAS)]
+    .map((id) => `<button class="chip ${id === areaElegida ? "activo" : ""}" data-area="${id}">${id ? AREAS[id].nombre : "✨ Todas"}</button>`)
     .join("");
   filtros.addEventListener("click", (e) => {
     const chip = e.target.closest(".chip");

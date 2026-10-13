@@ -335,6 +335,16 @@ h1 {
 .sede-iconos img { width: 32px; height: 32px; display: block; }
 
 .sede.destacada { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* La ruleta ocupa toda la fila del inicio, grande y centrada. */
+.sede.destacada {
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+.sede.destacada .sede-titulo { justify-content: center; }
+.sede.destacada .sede-titulo h2 { font-size: clamp(36px, 7vw, 56px); }
 .sede.destacada .sede-titulo span { color: inherit; opacity: .7; }
 .sede.destacada:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 

@@ -12,15 +12,17 @@ const ACTIVIDADES = {
   motion:      { nombre: "Motion graphics",area: "diseno", icono: "✨", color: "#ce2b24", link: "https://www.motionity.app/", logo: "icons/motion.webp" },
   cine:        { nombre: "Cine",           area: "diseno", icono: "🎬", color: "#fa5c1b", link: "https://cloudstopmotion.com/", logo: "icons/cine.webp" },
   fotografia:  { nombre: "Fotografía",     area: "diseno", icono: "📷", color: "#0895b7", link: "https://docs.google.com/presentation/d/1GkRyXfYC1iKMxci1pfwX8kZ4nlCUbHGs/edit?usp=sharing&ouid=111947021961172210965&rtpof=true&sd=true", logo: "icons/fotografia.webp" },
-  dibujo:      { nombre: "Dibujo",         area: "diseno", icono: "✏️", color: "#c0392b", link: "https://docs.google.com/presentation/d/1sAyDvsnyUDrzstdH9mnmAVdAD4KuSxQ-/edit?usp=sharing&ouid=101437381458811997703&rtpof=true&sd=true" },
+  dibujo:      { nombre: "Dibujo",         area: "diseno", icono: "✏️", color: "#8f3567", link: "https://docs.google.com/presentation/d/1sAyDvsnyUDrzstdH9mnmAVdAD4KuSxQ-/edit?usp=sharing&ouid=101437381458811997703&rtpof=true&sd=true", logo: "icons/dibujo.svg" },
 };
 
-// Animaciones de los GIF de tumo.ar como grilla de cuadros (assets/animados): [columnas, filas, duración en ms].
+// Animaciones de los GIF de tumo.ar como grilla de cuadros (assets/animados): [columnas, filas, duración en ms],
+// o la ruta de un SVG ya animado.
 // Se usan solo en las tarjetas para elegir actividad.
 const ANIMACIONES = {
   videojuegos: [25, 5, 10000], animacion: [25, 5, 10000], cine: [25, 5, 10000], diseno: [25, 5, 10000],
   robotica: [25, 5, 10000], modelado: [25, 5, 10000], programacion: [25, 5, 10000], musica: [25, 5, 10000],
   ia: [13, 7, 3640], motion: [25, 5, 10000], fotografia: [25, 5, 10000],
+  dibujo: "animados/dibujo.svg", // no está en tumo.ar: es un SVG animado hecho a mano
 };
 
 // Áreas para filtrar la ruleta. Cada actividad indica su área con el campo "area".

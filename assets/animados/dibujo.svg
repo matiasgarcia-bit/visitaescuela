@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="192" height="192">
+  <!-- Ícono de Dibujo animado: el lápiz avanza dibujando el trazo, lo sostiene, se borra y vuelve. -->
+  <defs>
+    <clipPath id="revelar">
+      <rect x="29" y="60" width="2" height="25">
+        <animate attributeName="width" dur="3s" repeatCount="indefinite"
+          keyTimes="0;0.5;0.85;0.86;1" values="2;28;28;2;2"
+          calcMode="spline" keySplines=".45 0 .55 1;0 0 1 1;0 0 1 1;0 0 1 1"/>
+      </rect>
+    </clipPath>
+  </defs>
+  <circle cx="50" cy="50" r="50" fill="#8f3567"/>
+  <polygon points="31,75 57,70.5 57,74.5 31,76" fill="#fff" clip-path="url(#revelar)">
+    <animate attributeName="opacity" dur="3s" repeatCount="indefinite"
+      keyTimes="0;0.7;0.85;0.86;1" values="1;1;0;1;1"/>
+  </polygon>
+  <g>
+    <animateTransform attributeName="transform" type="translate" dur="3s" repeatCount="indefinite"
+      keyTimes="0;0.5;0.7;0.85;1" values="0 0;22 -3.5;22 -3.5;0 0;0 0"
+      calcMode="spline" keySplines=".45 0 .55 1;0 0 1 1;.45 0 .55 1;0 0 1 1"/>
+    <g transform="translate(33 74) rotate(-41.8)">
+      <polygon points="0,0 13,-5 13,5" fill="#ecd3e1"/>
+      <polygon points="0,0 4,-1.5 4,1.5" fill="#c99ab4"/>
+      <rect x="13" y="-5" width="4" height="10" fill="#fff" opacity=".45"/>
+      <rect x="17" y="-5" width="21" height="10" fill="#fff"/>
+      <rect x="38" y="-5" width="3.5" height="10" fill="#fff" opacity=".45"/>
+      <rect x="41.5" y="-5" width="6" height="10" rx="2" fill="#fff"/>
+    </g>
+  </g>
+</svg>

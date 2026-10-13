@@ -68,6 +68,7 @@ function icono(actividadId) {
 function iconoAnimado(actividadId) {
   const anim = ANIMACIONES[actividadId];
   if (!anim) return `<div class="card-icono ${ACTIVIDADES[actividadId].logo ? "con-logo" : ""}">${icono(actividadId)}</div>`;
+  if (typeof anim === "string") return `<div class="card-icono animado"><img src="${BASE}assets/${anim}" alt=""></div>`;
   const [columnas, filas, ms] = anim;
   return `
       <div class="card-icono animado">
