@@ -83,11 +83,11 @@ function tarjeta(actividadId, sedeId, conBadges) {
   const a = ACTIVIDADES[actividadId];
   const sedes = sedesVisibles().filter((id) => SEDES[id].actividades.includes(actividadId));
   const pie = conBadges
-    ? `<div class="badges">${sedes.map((id) => `<span class="badge">${SEDES[id].nombre}</span>`).join("")}</div>`
+    ? `<div class="badges">${sedes.map((id) => `<span class="badge" data-sede="${id}">${SEDES[id].nombre}</span>`).join("")}</div>`
     : `<span></span>`;
   return `
     <a class="card" href="${linkDe(actividadId, sedeId)}" target="_blank" rel="noopener"
-       style="--c:${a.color}" data-actividad="${actividadId}" data-sedes="${sedes.join(" ")}">
+       ${sedeId ? "" : `style="--c:${a.color}"`} data-actividad="${actividadId}" data-sedes="${sedes.join(" ")}">
       ${iconoAnimado(actividadId)}
       <div class="card-nombre">${a.nombre}</div>
       <div class="card-pie">${pie}<span class="card-flecha">↗</span></div>
@@ -121,24 +121,22 @@ function armarTodas() {
 }
 
 function armarInicio() {
-  const tarjetasSedes = sedesVisibles().map((id) => {
-    const s = SEDES[id];
-    return `
-      <a class="sede" href="${id}/">
-        <div class="sede-titulo"><h2>${s.nombre}</h2></div>
-        <div class="sede-iconos">${s.actividades.map(icono).join("")}</div>
-      </a>`;
-  });
-  tarjetasSedes.push(`
-    <a class="sede" href="sedes/">
+  // Fila de arriba: una tarjeta por sede con su color. Abajo, en dos columnas: todas las sedes y la ruleta.
+  const tarjetas = sedesVisibles().map((id) => `
+      <a class="sede sede-color" data-sede="${id}" href="${id}/">
+        <div class="sede-titulo"><h2>${SEDES[id].nombre}</h2></div>
+        <div class="sede-iconos">${SEDES[id].actividades.map(icono).join("")}</div>
+      </a>`);
+  tarjetas.push(`
+    <a class="sede destacada" href="sedes/">
       <div class="sede-titulo"><h2>Todas las sedes</h2></div>
       <div class="sede-iconos">${todasLasActividades().map(icono).join("")}</div>
     </a>`);
-  tarjetasSedes.push(`
+  tarjetas.push(`
     <a class="sede destacada" href="ruleta/">
       <div class="sede-titulo"><h2>🎡 Ruleta</h2></div>
     </a>`);
-  document.getElementById("hub").innerHTML = tarjetasSedes.join("");
+  document.getElementById("hub").innerHTML = tarjetas.join("");
 }
 
 armarMenu();

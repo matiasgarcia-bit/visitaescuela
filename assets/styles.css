@@ -1,22 +1,37 @@
 :root {
-  --bg: #f6f5f1;
+  /* Paleta del Manual de Marca TUMO 2026 */
+  --blanco: #f2f2f2;          /* Blanco Gastado (institucional) */
+  --negro: #2f343b;           /* Negro (institucional) */
+  --barracas: #e75227;        /* Rojo Barracas */
+  --barracas-oscuro: #73250e; /* Rojo Oscuro */
+  --barracas-claro: #f6ab1e;  /* Amarillo Barracas */
+  --nunez: #198af4;           /* Azul Núñez */
+  --nunez-oscuro: #07447d;
+  --nunez-claro: #82affd;
+  --chacarita: #5eb656;       /* Verde Chacarita */
+  --chacarita-oscuro: #294a26;
+  --chacarita-claro: #8eeb85;
+
+  --bg: var(--blanco);
   --surface: #ffffff;
-  --ink: #16161a;
-  --muted: #6b6b76;
-  --line: #e4e2dc;
-  --accent: #ff4f2e;
-  --accent-ink: #ffffff;
+  --ink: var(--negro);
+  --muted: #6b7079;
+  --line: #dddfe2;
+  --accent: var(--negro);
+  --accent-ink: var(--blanco);
   --shadow: 0 1px 2px rgba(20, 20, 30, .06), 0 8px 24px rgba(20, 20, 30, .06);
   --radius: 18px;
 }
 
 /* Tema oscuro: se activa con el botón 🌙 del encabezado (claro por defecto). */
 :root[data-theme="dark"] {
-  --bg: #111114;
-  --surface: #1b1b20;
-  --ink: #f2f2f4;
-  --muted: #a0a0ab;
-  --line: #2c2c34;
+  --bg: #1e2227;
+  --surface: var(--negro);
+  --ink: var(--blanco);
+  --muted: #a3a8b0;
+  --line: #3d434b;
+  --accent: var(--blanco);
+  --accent-ink: var(--negro);
   --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .3);
 }
 
@@ -27,13 +42,31 @@ body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--ink);
-  font-family: "Outfit", "Segoe UI", system-ui, sans-serif;
+  /* La tipografía de marca es Maax (no es libre); Figtree es la alternativa web más parecida. */
+  font-family: "Figtree", "Segoe UI", system-ui, sans-serif;
   font-size: 17px;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
 
 a { color: inherit; }
+
+/* ---------- Páginas de sede: fondo con el color de la sede ---------- */
+/* Cada sede usa solo su propia paleta, más blanco y negro: Barracas sin el amarillo, rojos nada más. */
+body[data-sede="barracas"] { --sede: var(--barracas); --sede-oscuro: var(--barracas-oscuro); --sede-claro: var(--blanco); }
+body[data-sede="chacarita"] { --sede: var(--chacarita); --sede-oscuro: var(--chacarita-oscuro); --sede-claro: var(--chacarita-claro); }
+body[data-sede="nunez"] { --sede: var(--nunez); --sede-oscuro: var(--nunez-oscuro); --sede-claro: var(--nunez-claro); }
+
+body[data-sede] { --bg: var(--sede); --surface: var(--blanco); color: var(--blanco); }
+:root[data-theme="dark"] body[data-sede] { --bg: var(--sede-oscuro); --surface: var(--negro); }
+body[data-sede] .topbar { border-bottom-color: rgba(255, 255, 255, .2); }
+body[data-sede] .logo-img { filter: none; }
+
+/* Recurso gráfico "TUMO path": una píldora y dos puntos, con los colores de la propia sede. */
+.path { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.path span { width: 72px; height: 14px; border-radius: 999px; background: var(--blanco); }
+.path i { width: 14px; height: 14px; border-radius: 50%; background: var(--sede-oscuro); }
+:root[data-theme="dark"] .path i { background: var(--sede); }
 
 /* ---------- Navegación ---------- */
 .topbar {
@@ -151,7 +184,7 @@ h1 {
 }
 
 .card {
-  --c: var(--accent);
+  --c: var(--sede, var(--accent)); /* en una sede, los acentos son del color de la sede */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -162,6 +195,7 @@ h1 {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  color: var(--ink);
   text-decoration: none;
   overflow: hidden;
   transition: transform .2s ease, border-color .2s ease;
@@ -246,11 +280,15 @@ h1 {
 
 .badge {
   font-size: 12px;
+  font-weight: 600;
   padding: 2px 8px;
   border-radius: 999px;
-  border: 1px solid var(--line);
-  color: var(--muted);
+  color: var(--blanco);
 }
+
+.badge[data-sede="barracas"] { background: var(--barracas); }
+.badge[data-sede="chacarita"] { background: var(--chacarita); }
+.badge[data-sede="nunez"] { background: var(--nunez); }
 
 .card.oculta { display: none; }
 
@@ -272,7 +310,11 @@ h1 {
   transition: transform .2s, background .2s;
 }
 
-.final:hover { transform: translateY(-3px); background: var(--accent); color: var(--accent-ink); }
+.final:hover { transform: translateY(-3px); }
+
+body[data-sede] .final { background: var(--sede-oscuro); color: var(--blanco); }
+body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-oscuro); }
+:root[data-theme="dark"] body[data-sede] .final { background: var(--sede); }
 
 /* ---------- Filtros ---------- */
 .filtros {
@@ -299,57 +341,53 @@ h1 {
 .chip.activo { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
 /* ---------- Inicio ---------- */
+/* Arriba las tres sedes; abajo, en dos columnas, todas las sedes y la ruleta. */
 .hub {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 16px;
 }
 
 .sede {
+  grid-column: span 2;
   display: flex;
   flex-direction: column;
   gap: 14px;
   padding: 24px;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  min-height: 170px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   text-decoration: none;
-  transition: transform .2s, border-color .2s;
+  transition: transform .2s, background .2s;
 }
 
-.sede:hover { transform: translateY(-4px); border-color: var(--ink); }
+.sede:hover { transform: translateY(-4px); }
 
-.sede-titulo {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
+.sede-titulo h2 { margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -.01em; }
 
-.sede-titulo h2 { margin: 0; font-size: 28px; font-weight: 800; }
-.sede-titulo span { color: var(--muted); font-size: 14px; }
-
-.sede-iconos { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 24px; }
+.sede-iconos { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 24px; margin-top: auto; }
 .sede-iconos img { width: 32px; height: 32px; display: block; }
 
-.sede.destacada { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.sede-color { color: var(--blanco); }
+.sede-color[data-sede="barracas"] { background: var(--barracas); }
+.sede-color[data-sede="barracas"]:hover { background: var(--barracas-oscuro); }
+.sede-color[data-sede="chacarita"] { background: var(--chacarita); }
+.sede-color[data-sede="chacarita"]:hover { background: var(--chacarita-oscuro); }
+.sede-color[data-sede="nunez"] { background: var(--nunez); }
+.sede-color[data-sede="nunez"]:hover { background: var(--nunez-oscuro); }
 
-/* La ruleta ocupa toda la fila del inicio, grande y centrada. */
+/* Todas las sedes y ruleta: mismo color, grandes y centradas. */
 .sede.destacada {
-  grid-column: 1 / -1;
+  grid-column: span 3;
   align-items: center;
   justify-content: center;
+  text-align: center;
   padding: 40px 24px;
+  background: var(--ink);
+  color: var(--bg);
 }
-.sede.destacada .sede-titulo { justify-content: center; }
-.sede.destacada .sede-titulo h2 { font-size: clamp(36px, 7vw, 56px); }
-.sede.destacada .sede-titulo span { color: inherit; opacity: .7; }
-.sede.destacada:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-
-.sede p { margin: 0; color: var(--muted); }
-.sede.destacada p { color: inherit; opacity: .75; }
+.sede.destacada .sede-titulo h2 { font-size: clamp(32px, 5vw, 48px); }
+.sede.destacada .sede-iconos { justify-content: center; margin-top: 0; }
 
 /* ---------- Ruleta ---------- */
 .ruleta-layout {
@@ -408,7 +446,7 @@ h1 {
   transition: background .2s, transform .2s;
 }
 
-.ruleta-centro:hover:not(:disabled) { background: var(--accent); transform: translate(-50%, -50%) scale(1.06); }
+.ruleta-centro:hover:not(:disabled) { transform: translate(-50%, -50%) scale(1.06); }
 .ruleta-centro:disabled { cursor: default; opacity: .85; }
 
 .panel {
@@ -462,6 +500,12 @@ h1 {
 
 @media (max-width: 860px) {
   .ruleta-layout { grid-template-columns: 1fr; gap: 28px; }
+  .sede { grid-column: span 3; }
+  .sede-color:nth-child(3) { grid-column: span 6; }
+}
+
+@media (max-width: 600px) {
+  .sede, .sede.destacada, .sede-color:nth-child(3) { grid-column: 1 / -1; }
 }
 
 @media (max-width: 520px) {

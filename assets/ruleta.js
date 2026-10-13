@@ -68,11 +68,11 @@ function dibujar() {
     const texto = img ? a.nombre : `${a.nombre} ${a.icono}`;
     const espacio = finTexto - r * 0.27; // hasta el botón central
     let tam = Math.min(lado * 0.042, paso * r * 0.55);
-    ctx.font = `700 ${tam}px Outfit, "Segoe UI", sans-serif`;
+    ctx.font = `700 ${tam}px Figtree, "Segoe UI", sans-serif`;
     const ancho = ctx.measureText(texto).width;
     if (ancho > espacio) {
       tam *= espacio / ancho; // achica el texto para que no tape el botón central
-      ctx.font = `700 ${tam}px Outfit, "Segoe UI", sans-serif`;
+      ctx.font = `700 ${tam}px Figtree, "Segoe UI", sans-serif`;
     }
     ctx.shadowColor = "rgba(0,0,0,.3)";
     ctx.shadowBlur = tam * 0.3;
