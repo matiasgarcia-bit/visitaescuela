@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUMO · Ruleta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-base="../" data-pagina="ruleta">
+  <main>
+    <div class="encabezado">
+      <span class="eyebrow">Ruleta</span>
+      <h1>¿Qué te toca hoy?</h1>
+      <p class="bajada">Girá la ruleta y descubrí tu actividad. Si no te convence, volvé a tirar.</p>
+    </div>
+    <div class="ruleta-layout">
+      <div class="ruleta">
+        <div class="ruleta-puntero"></div>
+        <canvas id="ruleta" aria-label="Ruleta de actividades"></canvas>
+        <button class="ruleta-centro" id="girar">GIRAR</button>
+      </div>
+      <div>
+        <div class="panel">
+          <h2>Te tocó</h2>
+          <div id="resultado"></div>
+          <div class="acciones">
+            <button class="boton" id="reroll" disabled>🔄 Volver a tirar</button>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Actividades de</h2>
+          <div class="filtros" id="filtros"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="../assets/data.js"></script>
+  <script src="../assets/app.js"></script>
+  <script src="../assets/ruleta.js"></script>
+</body>
+</html>
