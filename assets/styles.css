@@ -420,7 +420,6 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
   display: block;
   border-radius: 50%;
   box-shadow: var(--shadow), 0 0 0 8px var(--surface), 0 0 0 9px var(--line);
-  transition: transform 5s cubic-bezier(.12, .7, .1, 1);
 }
 
 .ruleta-puntero {
@@ -653,7 +652,6 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ruleta canvas { transition-duration: .01s; }
   .card-icono .sprite, .card-icono .sprite-filas { animation-play-state: paused; }
   .card, .sede, .final, .boton, .opcion, .habilidad { transition: none; }
 }
