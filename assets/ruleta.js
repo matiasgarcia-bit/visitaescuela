@@ -141,8 +141,7 @@ let ultima = null;
 const RUEDA = {
   inicioTexto: 0.27,  // el texto arranca a la misma distancia del centro en todas las porciones
   centroIcono: 0.82,  // todos los íconos a la misma distancia del centro
-  radioIcono: 0.08,   // ícono (sin el borde)
-  bordeIcono: 0.0095, // borde blanco alrededor del ícono
+  radioIcono: 0.089,  // ícono, con su borde blanco
   texto: 0.046,       // tamaño de letra, igual para todas las disciplinas
 };
 
@@ -159,7 +158,7 @@ const fuente = (tam) => `800 ${tam}px Figtree, "Segoe UI", sans-serif`;
 
 // Un solo tamaño de letra para todas: el de diseño, o menos si el nombre más largo no entra antes del ícono.
 function tamTexto(r) {
-  const espacio = (RUEDA.centroIcono - RUEDA.radioIcono - RUEDA.bordeIcono - 0.03 - RUEDA.inicioTexto) * r;
+  const espacio = (RUEDA.centroIcono - RUEDA.radioIcono - 0.03 - RUEDA.inicioTexto) * r;
   let tam = RUEDA.texto * r;
   ctx.font = fuente(tam);
   const masLargo = Math.max(...Object.values(ACTIVIDADES).map((a) => ctx.measureText(a.nombre.toUpperCase()).width));
@@ -201,17 +200,12 @@ function dibujar() {
     ctx.font = fuente(tam);
     ctx.fillText(a.nombre.toUpperCase(), RUEDA.inicioTexto * r, 0);
 
-    // Ícono con borde blanco, siempre derecho como en el diseño, aunque la ruleta gire.
+    // Ícono (ya trae su borde blanco), siempre derecho como en el diseño, aunque la ruleta gire.
     ctx.translate(RUEDA.centroIcono * r, 0);
     ctx.rotate(-medio);
     const img = imagenes[id];
     const ri = RUEDA.radioIcono * r;
     if (img.complete && img.naturalWidth) ctx.drawImage(img, -ri, -ri, ri * 2, ri * 2);
-    ctx.beginPath();
-    ctx.arc(0, 0, ri + (RUEDA.bordeIcono * r) / 2 - lado * 0.001, 0, Math.PI * 2);
-    ctx.strokeStyle = "#fff";
-    ctx.lineWidth = RUEDA.bordeIcono * r + lado * 0.002; // tapa un poco el borde del ícono
-    ctx.stroke();
     ctx.restore();
   });
 }
