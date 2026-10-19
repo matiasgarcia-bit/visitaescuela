@@ -74,7 +74,7 @@ function responder(elegida) {
 
 // Mensaje del final según cuántas preguntas se acertaron.
 function mensajeFinal() {
-  if (aciertos === preguntas.length) return "¡Perfecto! Sabés todo sobre TUMO 🏆";
+  if (aciertos === preguntas.length) return "¡Muy bien! Sabés mucho sobre TUMO 🏆";
   if (aciertos >= preguntas.length * 2 / 3) return "¡Muy bien! Sabés mucho sobre TUMO 💪";
   if (aciertos > 0) return "¡Buen comienzo! Seguí explorando y vas a descubrir mucho más de TUMO 🚀";
   return "¡Hay mucho por conocer! Para eso estás acá: TUMO te espera 🌱";
