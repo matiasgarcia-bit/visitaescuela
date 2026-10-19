@@ -87,7 +87,7 @@ function armarHabilidades() {
   habilidades.innerHTML = todasLasActividades()
     .map((id) => `
       <button class="habilidad" data-id="${id}" style="--c:${ACTIVIDADES[id].color}">
-        <img src="${BASE}assets/${ACTIVIDADES[id].logo}" alt="">
+        <img src="${BASE}assets/${ACTIVIDADES[id].rueda}" alt="">
         <span>${ACTIVIDADES[id].nombre}</span>
       </button>`)
     .join("");
@@ -150,7 +150,7 @@ const imagenes = {};
 Object.keys(ACTIVIDADES).forEach((id) => {
   const img = new Image();
   img.onload = () => dibujar();
-  img.src = BASE + "assets/" + ACTIVIDADES[id].logo;
+  img.src = BASE + "assets/" + ACTIVIDADES[id].rueda;
   imagenes[id] = img;
 });
 
@@ -199,9 +199,9 @@ function dibujar() {
     ctx.font = fuente(tam);
     ctx.fillText(a.nombre.toUpperCase(), RUEDA.inicioTexto * r, 0);
 
-    // Ícono con borde blanco, derecho como en el diseño: se compensa el giro con el que va a quedar la ruleta.
+    // Ícono con borde blanco, derecho como en el diseño.
     ctx.translate(RUEDA.centroIcono * r, 0);
-    ctx.rotate(-medio - (rotacion * Math.PI) / 180);
+    ctx.rotate(-medio);
     const img = imagenes[id];
     const ri = RUEDA.radioIcono * r;
     if (img.complete && img.naturalWidth) ctx.drawImage(img, -ri, -ri, ri * 2, ri * 2);
@@ -251,7 +251,6 @@ function girar() {
   botonGirar.disabled = botonReroll.disabled = botonCambiar.disabled = true;
   resultado.className = "resultado-vacio";
   resultado.textContent = "Girando…";
-  dibujar(); // los íconos se dibujan ya derechos para cuando frene
   canvas.style.transform = `rotate(${rotacion}deg)`;
 
   const terminar = () => {

@@ -1,19 +1,19 @@
 // Catálogo de actividades: para cambiar un link, editarlo acá y se actualiza en todas las sedes.
-// "logo" es el ícono del área (assets/icons), sacado del Illustrator de diseño igual que los colores;
-// si no hay, se usa el emoji de "icono".
+// "logo" es el ícono del área sacado de tumo.ar (assets/icons); si no hay, se usa el emoji de "icono".
+// "rueda" es el ícono de la ruleta, sacado del Illustrator de diseño (assets/rueda); los colores también salen de ahí.
 const ACTIVIDADES = {
-  videojuegos: { nombre: "Videojuegos",    icono: "🎮", color: "#8bb225", link: "https://tumo-product.github.io/PlatformGames/es_AR.html", logo: "icons/videojuegos.webp" },
-  ia:          { nombre: "Gen IA",         icono: "🤖", color: "#7669ad", link: "https://hackathon-ia-tumo.vercel.app", logo: "icons/ia.webp" },
-  animacion:   { nombre: "Animación",      icono: "🎞️", color: "#f69f17", link: "https://garticphone.com/es", logo: "icons/animacion.webp" },
-  diseno:      { nombre: "Diseño",         icono: "🎨", color: "#e61f42", link: "https://garticphone.com/es", logo: "icons/diseno.webp" },
-  modelado:    { nombre: "Modelado 3D",    icono: "🧊", color: "#797520", link: "https://stephaneginier.com/sculptgl/", logo: "icons/modelado.webp" },
-  programacion:{ nombre: "Programación",   icono: "💻", color: "#a79e61", link: "https://compute-it.toxicode.fr/", logo: "icons/programacion.webp" },
-  robotica:    { nombre: "Robótica",       icono: "🦾", color: "#d8592d", link: "https://lab.open-roberta.org/", logo: "icons/robotica.webp" },
-  musica:      { nombre: "Música",         icono: "🎵", color: "#822870", link: "https://www.incredibox.com/", logo: "icons/musica.webp" },
-  motion:      { nombre: "Motion",         icono: "✨", color: "#e00915", link: "https://www.motionity.app/", logo: "icons/motion.webp" },
-  cine:        { nombre: "Cine",           icono: "🎬", color: "#e94f1d", link: "https://cloudstopmotion.com/", logo: "icons/cine.webp" },
-  fotografia:  { nombre: "Fotografía",     icono: "📷", color: "#0098bb", link: "https://docs.google.com/presentation/d/1GkRyXfYC1iKMxci1pfwX8kZ4nlCUbHGs/edit?usp=sharing&ouid=111947021961172210965&rtpof=true&sd=true", logo: "icons/fotografia.webp" },
-  dibujo:      { nombre: "Dibujo",         icono: "✏️", color: "#9c2c6a", link: "https://docs.google.com/presentation/d/1sAyDvsnyUDrzstdH9mnmAVdAD4KuSxQ-/edit?usp=sharing&ouid=101437381458811997703&rtpof=true&sd=true", logo: "icons/dibujo.webp" },
+  videojuegos: { nombre: "Videojuegos",    icono: "🎮", color: "#8bb225", link: "https://tumo-product.github.io/PlatformGames/es_AR.html", logo: "icons/videojuegos.webp", rueda: "rueda/videojuegos.webp" },
+  ia:          { nombre: "Gen IA",         icono: "🤖", color: "#7669ad", link: "https://hackathon-ia-tumo.vercel.app", logo: "icons/ia.webp", rueda: "rueda/ia.webp" },
+  animacion:   { nombre: "Animación",      icono: "🎞️", color: "#f69f17", link: "https://garticphone.com/es", logo: "icons/animacion.webp", rueda: "rueda/animacion.webp" },
+  diseno:      { nombre: "Diseño",         icono: "🎨", color: "#e61f42", link: "https://garticphone.com/es", logo: "icons/diseno.webp", rueda: "rueda/diseno.webp" },
+  modelado:    { nombre: "Modelado 3D",    icono: "🧊", color: "#797520", link: "https://stephaneginier.com/sculptgl/", logo: "icons/modelado.webp", rueda: "rueda/modelado.webp" },
+  programacion:{ nombre: "Programación",   icono: "💻", color: "#a79e61", link: "https://compute-it.toxicode.fr/", logo: "icons/programacion.webp", rueda: "rueda/programacion.webp" },
+  robotica:    { nombre: "Robótica",       icono: "🦾", color: "#d8592d", link: "https://lab.open-roberta.org/", logo: "icons/robotica.webp", rueda: "rueda/robotica.webp" },
+  musica:      { nombre: "Música",         icono: "🎵", color: "#822870", link: "https://www.incredibox.com/", logo: "icons/musica.webp", rueda: "rueda/musica.webp" },
+  motion:      { nombre: "Motion",         area: "diseno", icono: "✨", color: "#e00915", link: "https://www.motionity.app/", logo: "icons/motion.webp", rueda: "rueda/motion.webp" },
+  cine:        { nombre: "Cine",           icono: "🎬", color: "#e94f1d", link: "https://cloudstopmotion.com/", logo: "icons/cine.webp", rueda: "rueda/cine.webp" },
+  fotografia:  { nombre: "Fotografía",     icono: "📷", color: "#0098bb", link: "https://docs.google.com/presentation/d/1GkRyXfYC1iKMxci1pfwX8kZ4nlCUbHGs/edit?usp=sharing&ouid=111947021961172210965&rtpof=true&sd=true", logo: "icons/fotografia.webp", rueda: "rueda/fotografia.webp" },
+  dibujo:      { nombre: "Dibujo",         icono: "✏️", color: "#9c2c6a", link: "https://docs.google.com/presentation/d/1sAyDvsnyUDrzstdH9mnmAVdAD4KuSxQ-/edit?usp=sharing&ouid=101437381458811997703&rtpof=true&sd=true", logo: "icons/dibujo.svg", rueda: "rueda/dibujo.webp" },
 };
 
 // Animaciones de los GIF de tumo.ar como grilla de cuadros (assets/animados): [columnas, filas, duración en ms],
