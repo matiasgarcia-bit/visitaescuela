@@ -139,10 +139,11 @@ let ultima = null;
 
 // Medidas de la rueda del Illustrator de diseño, como fracción del radio.
 const RUEDA = {
-  inicioTexto: 0.27,  // el texto arranca a la misma distancia del centro en todas las porciones
+  finTexto: 0.70,     // el texto termina a la misma distancia del ícono en todas las porciones
+  minTexto: 0.275,    // y nunca se mete en el botón del centro
   centroIcono: 0.82,  // todos los íconos a la misma distancia del centro
   radioIcono: 0.089,  // ícono, con su borde blanco
-  texto: 0.046,       // tamaño de letra, igual para todas las disciplinas
+  texto: 0.056,       // tamaño de letra, igual para todas las disciplinas
 };
 
 // Íconos de la rueda precargados para dibujarlos en el canvas.
@@ -158,7 +159,7 @@ const fuente = (tam) => `800 ${tam}px Figtree, "Segoe UI", sans-serif`;
 
 // Un solo tamaño de letra para todas: el de diseño, o menos si el nombre más largo no entra antes del ícono.
 function tamTexto(r) {
-  const espacio = (RUEDA.centroIcono - RUEDA.radioIcono - 0.03 - RUEDA.inicioTexto) * r;
+  const espacio = (RUEDA.finTexto - RUEDA.minTexto) * r;
   let tam = RUEDA.texto * r;
   ctx.font = fuente(tam);
   const masLargo = Math.max(...Object.values(ACTIVIDADES).map((a) => ctx.measureText(a.nombre.toUpperCase()).width));
@@ -193,12 +194,12 @@ function dibujar() {
     ctx.translate(r, r);
     ctx.rotate(medio);
 
-    // Nombre en mayúsculas a lo largo del radio, desde el centro hacia afuera.
-    ctx.textAlign = "left";
+    // Nombre en mayúsculas a lo largo del radio, alineado contra el ícono con el mismo margen en todas.
+    ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#fff";
     ctx.font = fuente(tam);
-    ctx.fillText(a.nombre.toUpperCase(), RUEDA.inicioTexto * r, 0);
+    ctx.fillText(a.nombre.toUpperCase(), RUEDA.finTexto * r, 0);
 
     // Ícono (ya trae su borde blanco), siempre derecho como en el diseño, aunque la ruleta gire.
     ctx.translate(RUEDA.centroIcono * r, 0);
