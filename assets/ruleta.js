@@ -132,8 +132,7 @@ const botonCambiar = document.getElementById("cambiar");
 const resultado = document.getElementById("resultado");
 
 let opciones = [];
-let rotacion = 0; // giro final de la ruleta, en grados
-let angulo = 0;   // giro que se ve ahora (cambia durante la animación)
+let rotacion = 0;
 let girando = false;
 let ultima = null;
 
@@ -168,17 +167,16 @@ function tamTexto(r) {
 
 function dibujar() {
   if (!canvas.clientWidth || opciones.length === 0) return;
-  const lado = Math.round(canvas.clientWidth * (window.devicePixelRatio || 1));
-  if (canvas.width !== lado) canvas.width = canvas.height = lado;
+  const lado = canvas.clientWidth * (window.devicePixelRatio || 1);
+  canvas.width = canvas.height = lado;
   const r = lado / 2;
-  const giro = (angulo * Math.PI) / 180;
   const paso = (Math.PI * 2) / opciones.length;
   const tam = tamTexto(r);
   ctx.clearRect(0, 0, lado, lado);
 
   opciones.forEach((id, i) => {
     const a = ACTIVIDADES[id];
-    const inicio = i * paso + giro;
+    const inicio = i * paso;
     const medio = inicio + paso / 2;
     ctx.beginPath();
     ctx.moveTo(r, r);
@@ -201,9 +199,9 @@ function dibujar() {
     ctx.font = fuente(tam);
     ctx.fillText(a.nombre.toUpperCase(), RUEDA.inicioTexto * r, 0);
 
-    // Ícono con borde blanco, siempre derecho como en el diseño, aunque la ruleta gire.
+    // Ícono con borde blanco, derecho como en el diseño: se compensa el giro con el que va a quedar la ruleta.
     ctx.translate(RUEDA.centroIcono * r, 0);
-    ctx.rotate(-medio);
+    ctx.rotate(-medio - (rotacion * Math.PI) / 180);
     const img = imagenes[id];
     const ri = RUEDA.radioIcono * r;
     if (img.complete && img.naturalWidth) ctx.drawImage(img, -ri, -ri, ri * 2, ri * 2);
@@ -253,29 +251,17 @@ function girar() {
   botonGirar.disabled = botonReroll.disabled = botonCambiar.disabled = true;
   resultado.className = "resultado-vacio";
   resultado.textContent = "Girando…";
-
-  // El giro se anima redibujando el canvas en cada cuadro, para que los íconos no roten con la ruleta.
-  const desde = angulo;
-  const duracion = matchMedia("(prefers-reduced-motion: reduce)").matches ? 10 : 5000;
-  const comienzo = performance.now();
-  const animar = (ahora) => {
-    if (!girando) return;
-    const t = Math.min((ahora - comienzo) / duracion, 1);
-    angulo = desde + (rotacion - desde) * (1 - Math.pow(1 - t, 4)); // arranca rápido y frena de a poco
-    dibujar();
-    if (t < 1) requestAnimationFrame(animar);
-  };
-  requestAnimationFrame(animar);
+  dibujar(); // los íconos se dibujan ya derechos para cuando frene
+  canvas.style.transform = `rotate(${rotacion}deg)`;
 
   const terminar = () => {
     girando = false;
-    angulo = rotacion;
-    dibujar();
     botonGirar.disabled = botonCambiar.disabled = false;
     ultima = elegida;
     mostrarResultado(elegida);
   };
-  // Temporizador aparte: requestAnimationFrame se pausa si la pestaña queda en segundo plano.
+  // Temporizador en vez de "transitionend": ese evento no llega si la pestaña queda en segundo plano.
+  const duracion = parseFloat(getComputedStyle(canvas).transitionDuration) * 1000;
   setTimeout(terminar, duracion + 100);
 }
 
