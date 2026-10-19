@@ -16,25 +16,43 @@
       <h1>Ruleta 🎡</h1>
       <div class="path" aria-hidden="true"><span></span><i></i><i></i></div>
     </div>
-    <div class="ruleta-layout">
-      <div class="ruleta">
-        <div class="ruleta-puntero"></div>
-        <canvas id="ruleta" aria-label="Ruleta de actividades"></canvas>
-        <button class="ruleta-centro" id="girar">GIRAR</button>
+    <!-- Paso 1: trivia. Paso 2: elegir 3 habilidades. Paso 3: la ruleta gira entre esas 3. -->
+    <section class="paso" id="paso-trivia">
+      <div class="panel trivia">
+        <div class="trivia-progreso"><span id="trivia-numero"></span><span id="trivia-puntaje"></span></div>
+        <div class="trivia-barra"><i id="trivia-barra"></i></div>
+        <div id="trivia"></div>
       </div>
-      <div>
-        <div class="panel">
-          <h2>Te tocó</h2>
-          <div id="resultado"></div>
-          <div class="acciones">
-            <button class="boton" id="reroll" disabled>🔄 Volver a tirar</button>
+    </section>
+
+    <section class="paso" id="paso-habilidades" hidden>
+      <h2 class="titulo-paso">Seleccioná las 3 habilidades que más te gusten</h2>
+      <div class="habilidades" id="habilidades"></div>
+      <div class="habilidades-pie">
+        <span id="habilidades-cuenta"></span>
+        <button class="boton primario" id="ir-ruleta" disabled>Tirar la ruleta 🎡</button>
+      </div>
+    </section>
+
+    <section class="paso" id="paso-ruleta" hidden>
+      <div class="ruleta-layout">
+        <div class="ruleta">
+          <div class="ruleta-puntero"></div>
+          <canvas id="ruleta" aria-label="Ruleta de actividades"></canvas>
+          <button class="ruleta-centro" id="girar">GIRAR</button>
+        </div>
+        <div>
+          <div class="panel">
+            <h2>Te tocó</h2>
+            <div id="resultado"></div>
+            <div class="acciones">
+              <button class="boton" id="reroll" disabled>🔄 Volver a tirar</button>
+              <button class="boton" id="cambiar">Cambiar habilidades</button>
+            </div>
           </div>
         </div>
-        <div class="panel">
-          <div class="filtros" id="filtros"></div>
-        </div>
       </div>
-    </div>
+    </section>
   </main>
   <script src="../assets/data.js"></script>
   <script src="../assets/app.js"></script>

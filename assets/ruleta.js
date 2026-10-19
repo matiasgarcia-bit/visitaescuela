@@ -1,42 +1,183 @@
-// Ruleta: gira, elige una actividad al azar (de todas, o solo de diseño o de programación) y permite volver a tirar.
+// Ruleta en tres pasos: primero se completa la trivia, después se eligen 3 habilidades
+// y por último la ruleta gira entre esas 3 (se puede volver a tirar).
+
+const pasos = {
+  trivia: document.getElementById("paso-trivia"),
+  habilidades: document.getElementById("paso-habilidades"),
+  ruleta: document.getElementById("paso-ruleta"),
+};
+
+function mostrarPaso(id) {
+  Object.keys(pasos).forEach((p) => (pasos[p].hidden = p !== id));
+  window.scrollTo(0, 0);
+  if (id === "ruleta") dibujar(); // el canvas no tiene tamaño mientras está oculto
+}
+
+// ---------- Paso 1: trivia ----------
+
+const trivia = document.getElementById("trivia");
+const triviaNumero = document.getElementById("trivia-numero");
+const triviaPuntaje = document.getElementById("trivia-puntaje");
+const triviaBarra = document.getElementById("trivia-barra");
+let pregunta = 0;
+let aciertos = 0;
+
+function mostrarPregunta() {
+  const p = TRIVIA[pregunta];
+  triviaNumero.textContent = `Pregunta ${pregunta + 1} de ${TRIVIA.length}`;
+  triviaPuntaje.textContent = `✅ ${aciertos}`;
+  triviaBarra.style.width = `${(pregunta / TRIVIA.length) * 100}%`;
+  trivia.innerHTML = `
+    <div class="trivia-pregunta">${p.pregunta}</div>
+    <div class="trivia-opciones ${p.opciones.length === 2 ? "vf" : ""}">
+      ${p.opciones.map((o, i) => `<button class="opcion" data-i="${i}">${o}</button>`).join("")}
+    </div>
+    <div id="trivia-respuesta"></div>`;
+}
+
+trivia.addEventListener("click", (e) => {
+  const opcion = e.target.closest(".opcion");
+  if (opcion && !opcion.disabled) return responder(Number(opcion.dataset.i));
+  if (e.target.closest("#siguiente")) {
+    pregunta++;
+    if (pregunta < TRIVIA.length) mostrarPregunta();
+    else mostrarFinTrivia();
+  }
+  if (e.target.closest("#a-habilidades")) mostrarPaso("habilidades");
+});
+
+function responder(elegida) {
+  const p = TRIVIA[pregunta];
+  const bien = elegida === p.correcta;
+  if (bien) aciertos++;
+  trivia.querySelectorAll(".opcion").forEach((b, i) => {
+    b.disabled = true;
+    if (i === p.correcta) b.classList.add("correcta");
+    else if (i === elegida) b.classList.add("incorrecta");
+  });
+  triviaPuntaje.textContent = `✅ ${aciertos}`;
+  const ultima = pregunta === TRIVIA.length - 1;
+  document.getElementById("trivia-respuesta").innerHTML = `
+    <div class="trivia-respuesta ${bien ? "bien" : "mal"}">
+      <strong>${bien ? "¡Correcto! 🎉" : `La respuesta era: ${p.opciones[p.correcta]}`}</strong>
+      ${p.explicacion ? `<p>${p.explicacion}</p>` : ""}
+    </div>
+    <div class="acciones"><button class="boton primario" id="siguiente">${ultima ? "Ver resultado" : "Siguiente →"}</button></div>`;
+}
+
+function mostrarFinTrivia() {
+  triviaNumero.textContent = "¡Trivia completa!";
+  triviaBarra.style.width = "100%";
+  trivia.innerHTML = `
+    <div class="trivia-fin aparece">
+      <div class="trivia-fin-puntaje">${aciertos}<span>/${TRIVIA.length}</span></div>
+      <p>${aciertos === TRIVIA.length ? "¡Perfecto! Sabés todo sobre TUMO 🏆" : "¡Bien ahí! Ya conocés un montón de TUMO."}</p>
+      <div class="acciones"><button class="boton primario" id="a-habilidades">Seguir →</button></div>
+    </div>`;
+}
+
+// ---------- Paso 2: elegir habilidades ----------
+
+const habilidades = document.getElementById("habilidades");
+const habilidadesCuenta = document.getElementById("habilidades-cuenta");
+const botonIrRuleta = document.getElementById("ir-ruleta");
+let elegidas = [];
+
+function armarHabilidades() {
+  habilidades.innerHTML = todasLasActividades()
+    .map((id) => `
+      <button class="habilidad" data-id="${id}" style="--c:${ACTIVIDADES[id].color}">
+        <img src="${BASE}assets/${ACTIVIDADES[id].rueda}" alt="">
+        <span>${ACTIVIDADES[id].nombre}</span>
+      </button>`)
+    .join("");
+  actualizarHabilidades();
+}
+
+function actualizarHabilidades() {
+  const completas = elegidas.length === HABILIDADES_A_ELEGIR;
+  habilidades.querySelectorAll(".habilidad").forEach((b) => {
+    const elegida = elegidas.includes(b.dataset.id);
+    b.classList.toggle("elegida", elegida);
+    b.setAttribute("aria-pressed", elegida);
+    b.disabled = completas && !elegida;
+  });
+  habilidadesCuenta.textContent = `${elegidas.length} de ${HABILIDADES_A_ELEGIR}`;
+  botonIrRuleta.disabled = !completas;
+}
+
+habilidades.addEventListener("click", (e) => {
+  const b = e.target.closest(".habilidad");
+  if (!b) return;
+  const id = b.dataset.id;
+  if (elegidas.includes(id)) elegidas = elegidas.filter((x) => x !== id);
+  else if (elegidas.length < HABILIDADES_A_ELEGIR) elegidas.push(id);
+  actualizarHabilidades();
+});
+
+botonIrRuleta.addEventListener("click", () => {
+  opciones = todasLasActividades().filter((id) => elegidas.includes(id)); // en orden de catálogo
+  ultima = null;
+  mostrarVacio();
+  mostrarPaso("ruleta");
+});
+
+// ---------- Paso 3: ruleta ----------
 
 const canvas = document.getElementById("ruleta");
 const ctx = canvas.getContext("2d");
 const botonGirar = document.getElementById("girar");
 const botonReroll = document.getElementById("reroll");
+const botonCambiar = document.getElementById("cambiar");
 const resultado = document.getElementById("resultado");
-const filtros = document.getElementById("filtros");
 
-let areaElegida = ""; // "" = todas las actividades
 let opciones = [];
 let rotacion = 0;
 let girando = false;
 let ultima = null;
 
-// Íconos de tumo.ar precargados para dibujarlos en la ruleta.
+// Medidas de la rueda del Illustrator de diseño, como fracción del radio.
+const RUEDA = {
+  inicioTexto: 0.27,  // el texto arranca a la misma distancia del centro en todas las porciones
+  centroIcono: 0.82,  // todos los íconos a la misma distancia del centro
+  radioIcono: 0.08,   // ícono (sin el borde)
+  bordeIcono: 0.0095, // borde blanco alrededor del ícono
+  texto: 0.046,       // tamaño de letra, igual para todas las disciplinas
+};
+
+// Íconos de la rueda precargados para dibujarlos en el canvas.
 const imagenes = {};
 Object.keys(ACTIVIDADES).forEach((id) => {
-  if (!ACTIVIDADES[id].logo) return;
   const img = new Image();
   img.onload = () => dibujar();
-  img.src = BASE + "assets/" + ACTIVIDADES[id].logo;
+  img.src = BASE + "assets/" + ACTIVIDADES[id].rueda;
   imagenes[id] = img;
 });
 
-function actividadesDelGrupo() {
-  return todasLasActividades().filter((id) => !areaElegida || ACTIVIDADES[id].area === areaElegida);
+const fuente = (tam) => `800 ${tam}px Figtree, "Segoe UI", sans-serif`;
+
+// Un solo tamaño de letra para todas: el de diseño, o menos si el nombre más largo no entra antes del ícono.
+function tamTexto(r) {
+  const espacio = (RUEDA.centroIcono - RUEDA.radioIcono - RUEDA.bordeIcono - 0.03 - RUEDA.inicioTexto) * r;
+  let tam = RUEDA.texto * r;
+  ctx.font = fuente(tam);
+  const masLargo = Math.max(...Object.values(ACTIVIDADES).map((a) => ctx.measureText(a.nombre.toUpperCase()).width));
+  return masLargo > espacio ? tam * (espacio / masLargo) : tam;
 }
 
 function dibujar() {
+  if (!canvas.clientWidth || opciones.length === 0) return;
   const lado = canvas.clientWidth * (window.devicePixelRatio || 1);
   canvas.width = canvas.height = lado;
   const r = lado / 2;
   const paso = (Math.PI * 2) / opciones.length;
+  const tam = tamTexto(r);
   ctx.clearRect(0, 0, lado, lado);
 
   opciones.forEach((id, i) => {
     const a = ACTIVIDADES[id];
     const inicio = i * paso;
+    const medio = inicio + paso / 2;
     ctx.beginPath();
     ctx.moveTo(r, r);
     ctx.arc(r, r, r, inicio, inicio + paso);
@@ -44,56 +185,32 @@ function dibujar() {
     ctx.fillStyle = a.color;
     ctx.fill();
     ctx.strokeStyle = "rgba(255,255,255,.55)";
-    ctx.lineWidth = lado * 0.004;
+    ctx.lineWidth = lado * 0.002;
     ctx.stroke();
 
-    // Ícono contra el borde y el nombre a lo largo del radio, hacia el centro.
     ctx.save();
     ctx.translate(r, r);
-    ctx.rotate(inicio + paso / 2);
-    const img = imagenes[id];
-    const tamIcono = Math.min(r * 0.2, paso * r * 0.6);
-    let finTexto = r * 0.92;
-    if (img && img.complete && img.naturalWidth) {
-      ctx.save();
-      ctx.translate(r * 0.93 - tamIcono / 2, 0);
-      ctx.rotate(Math.PI / 2); // el ícono queda derecho cuando la porción está arriba
-      ctx.drawImage(img, -tamIcono / 2, -tamIcono / 2, tamIcono, tamIcono);
-      ctx.restore();
-      finTexto = r * 0.93 - tamIcono - r * 0.04;
-    }
-    ctx.textAlign = "right";
+    ctx.rotate(medio);
+
+    // Nombre en mayúsculas a lo largo del radio, desde el centro hacia afuera.
+    ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#fff";
-    const texto = img ? a.nombre : `${a.nombre} ${a.icono}`;
-    const espacio = finTexto - r * 0.27; // hasta el botón central
-    let tam = Math.min(lado * 0.042, paso * r * 0.55);
-    ctx.font = `700 ${tam}px Figtree, "Segoe UI", sans-serif`;
-    const ancho = ctx.measureText(texto).width;
-    if (ancho > espacio) {
-      tam *= espacio / ancho; // achica el texto para que no tape el botón central
-      ctx.font = `700 ${tam}px Figtree, "Segoe UI", sans-serif`;
-    }
-    ctx.shadowColor = "rgba(0,0,0,.3)";
-    ctx.shadowBlur = tam * 0.3;
-    ctx.fillText(texto, finTexto, 0);
-    ctx.restore();
-  });
-}
+    ctx.font = fuente(tam);
+    ctx.fillText(a.nombre.toUpperCase(), RUEDA.inicioTexto * r, 0);
 
-function armarFiltros() {
-  filtros.innerHTML = ["", ...Object.keys(AREAS)]
-    .map((id) => `<button class="chip ${id === areaElegida ? "activo" : ""}" data-area="${id}">${id ? AREAS[id].nombre : "✨ Todas"}</button>`)
-    .join("");
-  filtros.addEventListener("click", (e) => {
-    const chip = e.target.closest(".chip");
-    if (!chip || girando) return;
-    filtros.querySelectorAll(".chip").forEach((c) => c.classList.toggle("activo", c === chip));
-    areaElegida = chip.dataset.area;
-    opciones = actividadesDelGrupo();
-    ultima = null;
-    dibujar();
-    mostrarVacio();
+    // Ícono con borde blanco, derecho como en el diseño.
+    ctx.translate(RUEDA.centroIcono * r, 0);
+    ctx.rotate(-medio);
+    const img = imagenes[id];
+    const ri = RUEDA.radioIcono * r;
+    if (img.complete && img.naturalWidth) ctx.drawImage(img, -ri, -ri, ri * 2, ri * 2);
+    ctx.beginPath();
+    ctx.arc(0, 0, ri + (RUEDA.bordeIcono * r) / 2 - lado * 0.001, 0, Math.PI * 2);
+    ctx.strokeStyle = "#fff";
+    ctx.lineWidth = RUEDA.bordeIcono * r + lado * 0.002; // tapa un poco el borde del ícono
+    ctx.stroke();
+    ctx.restore();
   });
 }
 
@@ -131,14 +248,14 @@ function girar() {
   rotacion += 360 * (5 + Math.floor(Math.random() * 3)) + destino;
 
   girando = true;
-  botonGirar.disabled = botonReroll.disabled = true;
+  botonGirar.disabled = botonReroll.disabled = botonCambiar.disabled = true;
   resultado.className = "resultado-vacio";
   resultado.textContent = "Girando…";
   canvas.style.transform = `rotate(${rotacion}deg)`;
 
   const terminar = () => {
     girando = false;
-    botonGirar.disabled = false;
+    botonGirar.disabled = botonCambiar.disabled = false;
     ultima = elegida;
     mostrarResultado(elegida);
   };
@@ -147,12 +264,11 @@ function girar() {
   setTimeout(terminar, duracion + 100);
 }
 
+botonCambiar.addEventListener("click", () => mostrarPaso("habilidades"));
 botonGirar.addEventListener("click", girar);
 botonReroll.addEventListener("click", girar);
 window.addEventListener("resize", dibujar);
-
-armarFiltros();
-opciones = actividadesDelGrupo();
-mostrarVacio();
-dibujar();
 document.fonts.ready.then(dibujar);
+
+mostrarPregunta();
+armarHabilidades();
