@@ -69,7 +69,7 @@ const TRIVIA = [
   { pregunta: "¿Qué edades tienen los jóvenes que pueden asistir a TUMO?", opciones: ["De 6 a 12 años", "De 12 a 18 años", "De 18 a 25 años", "Para todas las edades sin límite"], correcta: 1 },
   { pregunta: "¿En qué emblemático edificio de la Ciudad de Buenos Aires se instaló el primer Centro TUMO de América Latina?", opciones: ["Palacio Barolo", "Centro Cultural Recoleta", "Centro Metropolitano de Diseño (CMD)", "Usina del Arte"], correcta: 2 },
   { pregunta: "¿Cuáles son los tres pilares del aprendizaje en la metodología TUMO?", opciones: ["Exámenes, Tareas y Exposiciones", "Autoaprendizaje, Talleres y Laboratorios de Proyectos", "Lectura, Práctica y Evaluación", "Clases magistrales, Trabajos grupales y Exámenes finales"], correcta: 1 },
-  { pregunta: "¿Cuántos centros TUMO hay actualmente en la Ciudad de Buenos Aires?", opciones: ["1", "2", "3", "5"], correcta: 2, explicacion: "Parque de la Ciudad, Núñez / Parque de la Innovación y Chacarita." },
+  { pregunta: "¿Cuántos centros TUMO hay actualmente en la Ciudad de Buenos Aires?", opciones: ["1", "2", "3", "5"], correcta: 2, explicacion: "Las sedes están ubicadas en Barracas, Núñez y Chacarita." },
   { pregunta: "Cada centro TUMO está representado por un color. ¿Cuáles son los colores de los centros en CABA?", opciones: ["Rojo, Azul y Verde", "Rosa, Azul y Amarillo", "Amarillo, Verde y Azul", "Las combinaciones dependen de las disciplinas"], correcta: 0 },
   { pregunta: "¿Cuál fue la primera ciudad de América Latina en contar con un centro TUMO?", opciones: ["San Pablo (Brasil)", "Santiago (Chile)", "Ciudad de Buenos Aires (Argentina)", "Ciudad de México (México)"], correcta: 2 },
   { pregunta: "¿Cuántas disciplinas o áreas de aprendizaje ofrece cada centro TUMO de Buenos Aires?", opciones: ["4", "6", "8", "20"], correcta: 2 },
@@ -88,6 +88,9 @@ const TRIVIA = [
   { pregunta: "¿Verdadero o falso? Los chicos que asisten a TUMO tienen que llevar su propia computadora de sus casas.", opciones: VF, correcta: 1, explicacion: "Los centros TUMO están equipados con todas las herramientas de nivel profesional necesarias para trabajar ahí." },
   { pregunta: "¿Verdadero o falso? Además de los centros de la Ciudad de Buenos Aires, existen centros TUMO en otros países del mundo como Francia, Alemania, Portugal y Estados Unidos.", opciones: VF, correcta: 0, explicacion: "TUMO es una red global con presencia e intercambios en múltiples ciudades del mundo (París, Berlín, Lisboa, Los Ángeles, entre otras)." },
 ];
+
+// Cuántas preguntas de la trivia se sortean en cada experiencia.
+const PREGUNTAS_POR_TRIVIA = 3;
 
 // Cuántas habilidades se eligen antes de tirar la ruleta.
 const HABILIDADES_A_ELEGIR = 3;

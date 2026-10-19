@@ -19,14 +19,21 @@ const trivia = document.getElementById("trivia");
 const triviaNumero = document.getElementById("trivia-numero");
 const triviaPuntaje = document.getElementById("trivia-puntaje");
 const triviaBarra = document.getElementById("trivia-barra");
+// Cada experiencia usa unas pocas preguntas sorteadas al azar (Fisher-Yates sobre una copia).
+const preguntas = TRIVIA.slice();
+for (let i = preguntas.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [preguntas[i], preguntas[j]] = [preguntas[j], preguntas[i]];
+}
+preguntas.length = Math.min(PREGUNTAS_POR_TRIVIA, preguntas.length);
 let pregunta = 0;
 let aciertos = 0;
 
 function mostrarPregunta() {
-  const p = TRIVIA[pregunta];
-  triviaNumero.textContent = `Pregunta ${pregunta + 1} de ${TRIVIA.length}`;
+  const p = preguntas[pregunta];
+  triviaNumero.textContent = `Pregunta ${pregunta + 1} de ${preguntas.length}`;
   triviaPuntaje.textContent = `✅ ${aciertos}`;
-  triviaBarra.style.width = `${(pregunta / TRIVIA.length) * 100}%`;
+  triviaBarra.style.width = `${(pregunta / preguntas.length) * 100}%`;
   trivia.innerHTML = `
     <div class="trivia-pregunta">${p.pregunta}</div>
     <div class="trivia-opciones ${p.opciones.length === 2 ? "vf" : ""}">
@@ -40,14 +47,14 @@ trivia.addEventListener("click", (e) => {
   if (opcion && !opcion.disabled) return responder(Number(opcion.dataset.i));
   if (e.target.closest("#siguiente")) {
     pregunta++;
-    if (pregunta < TRIVIA.length) mostrarPregunta();
+    if (pregunta < preguntas.length) mostrarPregunta();
     else mostrarFinTrivia();
   }
   if (e.target.closest("#a-habilidades")) mostrarPaso("habilidades");
 });
 
 function responder(elegida) {
-  const p = TRIVIA[pregunta];
+  const p = preguntas[pregunta];
   const bien = elegida === p.correcta;
   if (bien) aciertos++;
   trivia.querySelectorAll(".opcion").forEach((b, i) => {
@@ -56,7 +63,7 @@ function responder(elegida) {
     else if (i === elegida) b.classList.add("incorrecta");
   });
   triviaPuntaje.textContent = `✅ ${aciertos}`;
-  const ultima = pregunta === TRIVIA.length - 1;
+  const ultima = pregunta === preguntas.length - 1;
   document.getElementById("trivia-respuesta").innerHTML = `
     <div class="trivia-respuesta ${bien ? "bien" : "mal"}">
       <strong>${bien ? "¡Correcto! 🎉" : `La respuesta era: ${p.opciones[p.correcta]}`}</strong>
@@ -70,8 +77,8 @@ function mostrarFinTrivia() {
   triviaBarra.style.width = "100%";
   trivia.innerHTML = `
     <div class="trivia-fin aparece">
-      <div class="trivia-fin-puntaje">${aciertos}<span>/${TRIVIA.length}</span></div>
-      <p>${aciertos === TRIVIA.length ? "¡Perfecto! Sabés todo sobre TUMO 🏆" : "¡Bien ahí! Ya conocés un montón de TUMO."}</p>
+      <div class="trivia-fin-puntaje">${aciertos}<span>/${preguntas.length}</span></div>
+      <p>${aciertos === preguntas.length ? "¡Perfecto! Sabés todo sobre TUMO 🏆" : "¡Bien ahí! Ya conocés un montón de TUMO."}</p>
       <div class="acciones"><button class="boton primario" id="a-habilidades">Seguir →</button></div>
     </div>`;
 }
