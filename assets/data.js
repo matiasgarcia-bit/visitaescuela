@@ -72,7 +72,7 @@ const TRIVIA = [
   { pregunta: "¿Cuántos centros TUMO hay actualmente en la Ciudad de Buenos Aires?", opciones: ["1", "2", "3", "5"], correcta: 2, explicacion: "Parque de la Ciudad, Núñez / Parque de la Innovación y Chacarita." },
   { pregunta: "Cada centro TUMO está representado por un color. ¿Cuáles son los colores de los centros en CABA?", opciones: ["Rojo, Azul y Verde", "Rosa, Azul y Amarillo", "Amarillo, Verde y Azul", "Las combinaciones dependen de las disciplinas"], correcta: 0 },
   { pregunta: "¿Cuál fue la primera ciudad de América Latina en contar con un centro TUMO?", opciones: ["San Pablo (Brasil)", "Santiago (Chile)", "Ciudad de Buenos Aires (Argentina)", "Ciudad de México (México)"], correcta: 2 },
-  { pregunta: "¿Cuántas disciplinas o áreas de aprendizaje ofrece TUMO Buenos Aires?", opciones: ["4", "6", "8", "20"], correcta: 2 },
+  { pregunta: "¿Cuántas disciplinas o áreas de aprendizaje ofrece cada centro TUMO de Buenos Aires?", opciones: ["4", "6", "8", "20"], correcta: 2 },
   { pregunta: "En la etapa de Autoaprendizaje, ¿con qué herramienta o plataforma van avanzando los chicos?", opciones: ["Un libro impreso", "Una plataforma interactiva", "Un cuaderno de ejercicios"], correcta: 1 },
   { pregunta: "¿Quién te acompaña y te orienta durante tus sesiones en el centro?", opciones: ["Un preceptor", "Un Coach", "Un celador", "Un profesor de grado"], correcta: 1 },
   { pregunta: "¿Cuál de estos proyectos podrías llegar a crear en TUMO?", opciones: ["Tu propio videojuego o animación 3D", "Una pista musical o producción digital", "Una página web o robot", "¡Todas las anteriores!"], correcta: 3 },
