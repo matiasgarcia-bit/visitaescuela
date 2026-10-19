@@ -87,7 +87,7 @@ function armarHabilidades() {
   habilidades.innerHTML = todasLasActividades()
     .map((id) => `
       <button class="habilidad" data-id="${id}" style="--c:${ACTIVIDADES[id].color}">
-        <img src="${BASE}assets/${ACTIVIDADES[id].rueda}" alt="">
+        <img src="${BASE}assets/${ACTIVIDADES[id].logo}" alt="">
         <span>${ACTIVIDADES[id].nombre}</span>
       </button>`)
     .join("");
@@ -132,17 +132,18 @@ const botonCambiar = document.getElementById("cambiar");
 const resultado = document.getElementById("resultado");
 
 let opciones = [];
-let rotacion = 0;
+let rotacion = 0; // giro final de la ruleta, en grados
+let angulo = 0;   // giro que se ve ahora (cambia durante la animación)
 let girando = false;
 let ultima = null;
 
 // Medidas de la rueda del Illustrator de diseño, como fracción del radio.
 const RUEDA = {
-  inicioTexto: 0.27,  // el texto arranca a la misma distancia del centro en todas las porciones
+  finTexto: 0.70,     // el texto termina a la misma distancia del ícono en todas las porciones
+  minTexto: 0.275,    // y nunca se mete en el botón del centro
   centroIcono: 0.82,  // todos los íconos a la misma distancia del centro
-  radioIcono: 0.08,   // ícono (sin el borde)
-  bordeIcono: 0.0095, // borde blanco alrededor del ícono
-  texto: 0.046,       // tamaño de letra, igual para todas las disciplinas
+  radioIcono: 0.089,  // ícono, con su borde blanco
+  texto: 0.056,       // tamaño de letra, igual para todas las disciplinas
 };
 
 // Íconos de la rueda precargados para dibujarlos en el canvas.
@@ -150,7 +151,7 @@ const imagenes = {};
 Object.keys(ACTIVIDADES).forEach((id) => {
   const img = new Image();
   img.onload = () => dibujar();
-  img.src = BASE + "assets/" + ACTIVIDADES[id].rueda;
+  img.src = BASE + "assets/" + ACTIVIDADES[id].logo;
   imagenes[id] = img;
 });
 
@@ -158,7 +159,7 @@ const fuente = (tam) => `800 ${tam}px Figtree, "Segoe UI", sans-serif`;
 
 // Un solo tamaño de letra para todas: el de diseño, o menos si el nombre más largo no entra antes del ícono.
 function tamTexto(r) {
-  const espacio = (RUEDA.centroIcono - RUEDA.radioIcono - RUEDA.bordeIcono - 0.03 - RUEDA.inicioTexto) * r;
+  const espacio = (RUEDA.finTexto - RUEDA.minTexto) * r;
   let tam = RUEDA.texto * r;
   ctx.font = fuente(tam);
   const masLargo = Math.max(...Object.values(ACTIVIDADES).map((a) => ctx.measureText(a.nombre.toUpperCase()).width));
@@ -167,16 +168,17 @@ function tamTexto(r) {
 
 function dibujar() {
   if (!canvas.clientWidth || opciones.length === 0) return;
-  const lado = canvas.clientWidth * (window.devicePixelRatio || 1);
-  canvas.width = canvas.height = lado;
+  const lado = Math.round(canvas.clientWidth * (window.devicePixelRatio || 1));
+  if (canvas.width !== lado) canvas.width = canvas.height = lado;
   const r = lado / 2;
+  const giro = (angulo * Math.PI) / 180;
   const paso = (Math.PI * 2) / opciones.length;
   const tam = tamTexto(r);
   ctx.clearRect(0, 0, lado, lado);
 
   opciones.forEach((id, i) => {
     const a = ACTIVIDADES[id];
-    const inicio = i * paso;
+    const inicio = i * paso + giro;
     const medio = inicio + paso / 2;
     ctx.beginPath();
     ctx.moveTo(r, r);
@@ -192,24 +194,19 @@ function dibujar() {
     ctx.translate(r, r);
     ctx.rotate(medio);
 
-    // Nombre en mayúsculas a lo largo del radio, desde el centro hacia afuera.
-    ctx.textAlign = "left";
+    // Nombre en mayúsculas a lo largo del radio, alineado contra el ícono con el mismo margen en todas.
+    ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#fff";
     ctx.font = fuente(tam);
-    ctx.fillText(a.nombre.toUpperCase(), RUEDA.inicioTexto * r, 0);
+    ctx.fillText(a.nombre.toUpperCase(), RUEDA.finTexto * r, 0);
 
-    // Ícono con borde blanco, derecho como en el diseño.
+    // Ícono (ya trae su borde blanco), siempre derecho como en el diseño, aunque la ruleta gire.
     ctx.translate(RUEDA.centroIcono * r, 0);
     ctx.rotate(-medio);
     const img = imagenes[id];
     const ri = RUEDA.radioIcono * r;
     if (img.complete && img.naturalWidth) ctx.drawImage(img, -ri, -ri, ri * 2, ri * 2);
-    ctx.beginPath();
-    ctx.arc(0, 0, ri + (RUEDA.bordeIcono * r) / 2 - lado * 0.001, 0, Math.PI * 2);
-    ctx.strokeStyle = "#fff";
-    ctx.lineWidth = RUEDA.bordeIcono * r + lado * 0.002; // tapa un poco el borde del ícono
-    ctx.stroke();
     ctx.restore();
   });
 }
@@ -251,16 +248,29 @@ function girar() {
   botonGirar.disabled = botonReroll.disabled = botonCambiar.disabled = true;
   resultado.className = "resultado-vacio";
   resultado.textContent = "Girando…";
-  canvas.style.transform = `rotate(${rotacion}deg)`;
+
+  // El giro se anima redibujando el canvas en cada cuadro, para que los íconos no roten con la ruleta.
+  const desde = angulo;
+  const duracion = matchMedia("(prefers-reduced-motion: reduce)").matches ? 10 : 5000;
+  const comienzo = performance.now();
+  const animar = (ahora) => {
+    if (!girando) return;
+    const t = Math.min((ahora - comienzo) / duracion, 1);
+    angulo = desde + (rotacion - desde) * (1 - Math.pow(1 - t, 4)); // arranca rápido y frena de a poco
+    dibujar();
+    if (t < 1) requestAnimationFrame(animar);
+  };
+  requestAnimationFrame(animar);
 
   const terminar = () => {
     girando = false;
+    angulo = rotacion;
+    dibujar();
     botonGirar.disabled = botonCambiar.disabled = false;
     ultima = elegida;
     mostrarResultado(elegida);
   };
-  // Temporizador en vez de "transitionend": ese evento no llega si la pestaña queda en segundo plano.
-  const duracion = parseFloat(getComputedStyle(canvas).transitionDuration) * 1000;
+  // Temporizador aparte: requestAnimationFrame se pausa si la pestaña queda en segundo plano.
   setTimeout(terminar, duracion + 100);
 }
 

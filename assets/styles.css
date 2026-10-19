@@ -409,7 +409,7 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
 
 .ruleta {
   position: relative;
-  width: min(100%, 480px);
+  width: min(100%, 560px);
   aspect-ratio: 1;
   margin: 0 auto;
 }
@@ -594,10 +594,10 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
   transition: transform .15s, border-color .2s, background .2s, opacity .2s;
 }
 
-.habilidad img { width: 72px; height: 72px; border-radius: 50%; box-shadow: 0 0 0 4px #fff, 0 0 0 5px var(--line); }
+.habilidad img { width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 0 0 1px var(--line); }
 .habilidad:hover:not(:disabled) { transform: translateY(-3px); border-color: var(--c); }
 .habilidad.elegida { border-color: var(--c); background: var(--c); color: #fff; }
-.habilidad.elegida img { box-shadow: 0 0 0 4px #fff; }
+.habilidad.elegida img { box-shadow: none; }
 .habilidad.elegida::after {
   content: "✓";
   position: absolute;
@@ -646,7 +646,7 @@ body[data-sede] .final:hover { background: var(--sede-claro); color: var(--sede-
   .card-nombre { font-size: 18px; }
   .trivia { padding: 20px; }
   .habilidades { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .habilidad img { width: 60px; height: 60px; }
+  .habilidad img { width: 68px; height: 68px; }
   .logo { font-size: 19px; }
   .logo-img { height: 26px; }
   .topbar-inner { gap: 12px; }
