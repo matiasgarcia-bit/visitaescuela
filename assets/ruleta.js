@@ -72,13 +72,21 @@ function responder(elegida) {
     <div class="acciones"><button class="boton primario" id="siguiente">${ultima ? "Ver resultado" : "Siguiente →"}</button></div>`;
 }
 
+// Mensaje del final según cuántas preguntas se acertaron.
+function mensajeFinal() {
+  if (aciertos === preguntas.length) return "¡Perfecto! Sabés todo sobre TUMO 🏆";
+  if (aciertos >= preguntas.length * 2 / 3) return "¡Muy bien! Conocés mucho de TUMO 💪";
+  if (aciertos > 0) return "¡Buen comienzo! Seguí explorando y vas a descubrir mucho más de TUMO 🚀";
+  return "¡Hay mucho por conocer! Para eso estás acá: TUMO te espera 🌱";
+}
+
 function mostrarFinTrivia() {
   triviaNumero.textContent = "¡Trivia completa!";
   triviaBarra.style.width = "100%";
   trivia.innerHTML = `
     <div class="trivia-fin aparece">
       <div class="trivia-fin-puntaje">${aciertos}<span>/${preguntas.length}</span></div>
-      <p>${aciertos === preguntas.length ? "¡Perfecto! Sabés todo sobre TUMO 🏆" : "¡Bien ahí! Ya conocés un montón de TUMO."}</p>
+      <p>${mensajeFinal()}</p>
       <div class="acciones"><button class="boton primario" id="a-habilidades">Seguir →</button></div>
     </div>`;
 }
